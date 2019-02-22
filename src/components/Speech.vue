@@ -61,14 +61,14 @@ export default {
     },
 
     query(query) {
-      axios.post('http://18.235.66.33:8099/v1/ask', query)
+      axios.post('https://18.235.66.33:8099/v1/ask', query)
       .then( response => {
         console.log(response.data)
         this.result = response.data.answerProperties
       })
       .catch( error => {
         console.log(error)
-      });
+      })
     }
   }
 }
