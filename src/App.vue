@@ -2,6 +2,7 @@
   #app
     Intro.intro(:class="{ show: !getIntroState }")
     Speech(v-if="getIntroState")
+    img.bg-image(src="/assets/images/sketch.jpg")
 </template>
 
 <script>
@@ -35,4 +36,13 @@ export default {
     transition: opacity 1s ease-in-out
     &.show
       opacity: 1
+  .bg-image
+    position: fixed
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+    object-fit: cover
+    z-index: -1
+    opacity: 0.3
 </style>

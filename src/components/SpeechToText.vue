@@ -1,5 +1,5 @@
-<template>
-
+<template lang="pug">
+  div
 </template>
 
 <script>
@@ -52,12 +52,21 @@ export default {
           this.$emit('onEnd', this.transcription)
         }
         this.runtimeTranscription = ''
-        this.recognition.start()
+        // this.recognition.start()
       })
 
       this.recognition.start()
+    },
+
+    start() {
+      this.recognition.start()
+    },
+
+    stop() {
+      this.recognition.stop()
     }
   },
+
   mounted () {
     this.initApi()
   }

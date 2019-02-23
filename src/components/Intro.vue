@@ -1,7 +1,7 @@
 <template lang="pug">
   .nfl-voice-intro(@click="playVideo")
     video(preload autoplay ref="nflVideo")
-      source(src="/assets/video/intro.mp4" type="video/mp4")
+      source(src="/assets/video/test.mp4" type="video/mp4")
 </template>
 
 <script>
@@ -18,6 +18,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      getIntroState: 'getIntroState'
+    }),
+
     vidEl() {
       return this.$refs.nflVideo
     }
@@ -37,7 +41,9 @@ export default {
     },
 
     playVideo() {
-      this.vidEl.play()
+      if (!this.getIntroState) {
+        this.vidEl.play()
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 <template lang="pug">
   .nfl-speech-input
-    speech-to-text(@onEnd="onEnd" @onRunning="onRunning")
+    speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
     .content-container
       h1 Please ask a question
       .query(v-if="getQuery.length > 0")
@@ -85,7 +85,7 @@ export default {
         this.setFollowUp(data.breadcrumbResponse.response)
         this.setIntent(data.responseIntentName)
       } else {
-        this.setAnswer('Mmhh...')
+        this.setAnswer('Sorry, I do not know the answer to this question.')
         this.setEntity('')
         this.setIntent('')
         this.setFollowUp('')
@@ -96,12 +96,26 @@ export default {
     query(query) {
       axios.post('http://18.235.66.33:8099/v1/ask', query)
       .then( response => {
-        // console.log(response.data)
         this.parseResults(response.data.answerProperties)
       })
       .catch( error => {
-        // console.log(error)
       })
+    },
+
+    readAnswer() {
+      this.$refs.speech.stop()
+      let answer = new SpeechSynthesisUtterance(this.getAnswer)
+      window.speechSynthesis.speak(answer)
+      answer.onend = (event) => {
+        this.$refs.speech.start()
+        window.speechSynthesis.cancel()
+      }
+    }
+  },
+
+  watch: {
+    getAnswer() {
+      this.readAnswer()
     }
   }
 }
