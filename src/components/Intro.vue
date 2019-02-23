@@ -1,6 +1,6 @@
 <template lang="pug">
-  .nfl-voice-intro
-    video#nfl-video(preload autoplay)
+  .nfl-voice-intro(@click="playVideo")
+    video(preload autoplay ref="nflVideo")
       source(src="/assets/video/intro.mp4" type="video/mp4")
 </template>
 
@@ -17,9 +17,14 @@ export default {
     }
   },
 
+  computed: {
+    vidEl() {
+      return this.$refs.nflVideo
+    }
+  },
+
   mounted() {
-    const vid = document.getElementById('nfl-video')
-    vid.addEventListener('ended', this.handleEnd)
+    this.vidEl.addEventListener('ended', this.handleEnd)
   },
 
   methods: {
@@ -29,6 +34,10 @@ export default {
 
     handleEnd() {
       this.setIntroState(true)
+    },
+
+    playVideo() {
+      this.vidEl.play()
     }
   }
 }
