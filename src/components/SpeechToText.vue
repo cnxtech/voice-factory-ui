@@ -52,7 +52,7 @@ export default {
           this.$emit('onEnd', this.transcription)
         }
         this.runtimeTranscription = ''
-        // this.recognition.start()
+        this.recognition.start()
       })
 
       this.recognition.start()

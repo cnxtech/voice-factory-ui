@@ -103,13 +103,12 @@ export default {
     },
 
     readAnswer() {
-      this.$refs.speech.stop()
-      let answer = new SpeechSynthesisUtterance(this.getAnswer)
-      window.speechSynthesis.speak(answer)
-      answer.onend = (event) => {
-        this.$refs.speech.start()
-        window.speechSynthesis.cancel()
-      }
+      // this.$refs.speech.stop()
+      // let answer = new SpeechSynthesisUtterance(this.getAnswer)
+      // window.speechSynthesis.speak(answer)
+      // answer.onend = (e) => {
+      //   this.$refs.speech.start()
+      // }
     }
   },
 
