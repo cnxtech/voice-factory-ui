@@ -8,7 +8,9 @@ export default new Vuex.Store({
   	query: '',
   	answer: '',
   	entity: '',
+    error: '',
   	intent: '',
+    followUp: '',
   	introEnded: false
   },
 
@@ -25,9 +27,17 @@ export default new Vuex.Store({
 	    state.entity = val
 	  },
 
+    storeError: function(state, val) {
+      state.error = val
+    },
+
 	  storeIntent: function(state, val) {
 	  	state.intent = val
 	  },
+
+    storeFollowUp: function(state, val) {
+      state.followUp = val
+    },
 
 	  storeIntroState: function(state, val) {
 	  	state.introEnded = val
@@ -47,9 +57,17 @@ export default new Vuex.Store({
 	    commit('storeEntity', val)
   	},
 
+    setError({ commit }, val) {
+      commit('storeError', val)
+    },
+
 		setIntent({ commit }, val) {
 	    commit('storeIntent', val)
   	},
+
+    setFollowUp({ commit }, val) {
+      commit('storeFollowUp', val)
+    },
 
 		setIntroState({ commit }, val) {
 	    commit('storeIntroState', val)
@@ -69,9 +87,17 @@ export default new Vuex.Store({
   		return state.entity
   	},
 
+    getError(state) {
+      return state.error
+    },
+
   	getIntent(state) {
   		return state.intent
   	},
+
+    getFollowUp(state) {
+      return state.followUp
+    },
 
   	getIntroState(state) {
   		return state.introEnded

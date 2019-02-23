@@ -7,9 +7,11 @@
         h1 {{ getQuery }}?
       dot-loader(v-show="!result && showLoader")
       .content(v-if="result")
+        h1 State: {{ getError }}
         h1 Intent: {{ getIntent }}
         h1 Entity: {{ getEntity }}
         h1 Answer: {{ getAnswer }}
+        h1 Follow Up: {{ getFollowUp }}
 </template>
 
 <script>
@@ -39,6 +41,8 @@ export default {
       getQuery: 'getQuery',
       getAnswer: 'getAnswer',
       getEntity: 'getEntity',
+      getError: 'getError',
+      getFollowUp: 'getFollowUp',
       getIntent: 'getIntent'
     }),
 
@@ -52,6 +56,8 @@ export default {
       setQuery: 'setQuery',
       setAnswer: 'setAnswer',
       setEntity: 'setEntity',
+      setError: 'setError',
+      setFollowUp: 'setFollowUp',
       setIntent: 'setIntent'
     }),
 
@@ -75,11 +81,15 @@ export default {
       if (this.valid) {
         this.setAnswer(data.fulfillmentResponses[0].fulfillment)
         this.setEntity(data.alignedVariables.FootballTerm)
+        this.setError(data.responseType)
+        this.setFollowUp(data.breadcrumbResponse.response)
         this.setIntent(data.responseIntentName)
       } else {
         this.setAnswer('Mmhh...')
         this.setEntity('')
         this.setIntent('')
+        this.setFollowUp('')
+        this.setError(data.responseType)
       }
     },
 
