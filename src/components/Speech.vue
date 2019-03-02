@@ -1,17 +1,17 @@
 <template lang="pug">
   .nfl-speech-input
     speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
-    .content-container
+    .content-container(v-if="getCurrentScene === 0")
       h1 Please ask a question
       .query(v-if="getQuery.length > 0")
         h1 {{ getQuery }}?
       dot-loader(v-show="!result && showLoader")
-      .content(v-if="result")
-        h1 State: {{ getError }}
-        h1 Intent: {{ getIntent }}
-        h1 Entity: {{ getEntity }}
-        h1 Answer: {{ getAnswer }}
-        h1 Follow Up: {{ getFollowUp }}
+      // .content(v-if="result")
+      //  h1 State: {{ getError }}
+      //  h1 Intent: {{ getIntent }}
+      //  h1 Entity: {{ getEntity }}
+      //  h1 Answer: {{ getAnswer }}
+      //  h1 Follow Up: {{ getFollowUp }}
 </template>
 
 <script>
@@ -40,6 +40,7 @@ export default {
     ...mapGetters({
       getQuery: 'getQuery',
       getAnswer: 'getAnswer',
+      getCurrentScene: 'getSceneNumber',
       getEntity: 'getEntity',
       getError: 'getError',
       getFollowUp: 'getFollowUp',
@@ -58,7 +59,8 @@ export default {
       setEntity: 'setEntity',
       setError: 'setError',
       setFollowUp: 'setFollowUp',
-      setIntent: 'setIntent'
+      setIntent: 'setIntent',
+      setCurrentScene: 'setSceneNumber'
     }),
 
     onEnd(transcription) {
@@ -78,6 +80,7 @@ export default {
 
     parseResults(data) {
       this.result = data
+      this.setCurrentScene(1)
       if (this.valid) {
         this.setAnswer(data.fulfillmentResponses[0].fulfillment)
         this.setEntity(data.alignedVariables.FootballTerm)
@@ -123,6 +126,9 @@ export default {
 
 <style lang="sass">
   .nfl-speech-input
+    position: fixed
+    top: 0
+    left: 0
     height: 100vh
     width: 100vw
     display: flex

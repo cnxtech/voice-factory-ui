@@ -11,7 +11,8 @@ export default new Vuex.Store({
     error: '',
   	intent: '',
     followUp: '',
-  	introEnded: false
+  	introEnded: false,
+    currentScene: 0
   },
 
   mutations: {
@@ -41,7 +42,11 @@ export default new Vuex.Store({
 
 	  storeIntroState: function(state, val) {
 	  	state.introEnded = val
-	  }
+	  },
+
+    storeSceneNumber: function(state, val) {
+      state.currentScene = val
+    },
   },
 
   actions: {
@@ -71,7 +76,11 @@ export default new Vuex.Store({
 
 		setIntroState({ commit }, val) {
 	    commit('storeIntroState', val)
-  	}
+  	},
+
+    setSceneNumber({ commit }, val) {
+      commit('storeSceneNumber', val)
+    }
   },
 
   getters: {
@@ -101,6 +110,10 @@ export default new Vuex.Store({
 
   	getIntroState(state) {
   		return state.introEnded
-  	}
+  	},
+
+    getSceneNumber(state) {
+      return state.currentScene
+    }
   }
 })
