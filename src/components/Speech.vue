@@ -97,7 +97,7 @@ export default {
     },
 
     query(query) {
-      axios.post('http://18.235.66.33:8099/v1/ask', query)
+      axios.post('https://api.jackomatic.com:8080/v1/ask', query)
       .then( response => {
         this.parseResults(response.data.answerProperties)
       })

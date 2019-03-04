@@ -1,11 +1,11 @@
 <template lang="pug">
   .scene-manager(v-on:keyup.enter="handleKeys")
-    img.s-0.bg-image.row(:class="scene0" src="/assets/images/big.jpg" ref="s0")
-    img.s-1.bg-image.row(:class="scene1" src="/assets/images/row1.jpg" ref="s1")
-    img.s-2.bg-image.col(:class="scene2" src="/assets/images/col1.jpg" ref="s2")
-    img.s-3.bg-image.row(:class="scene3" src="/assets/images/row2.jpg" ref="s3")
-    img.s-4.bg-image.col(:class="scene4" src="/assets/images/col2.jpg" ref="s4")
-    img.s-5.bg-image.row(:class="scene5" src="/assets/images/row3.jpg" ref="s5")
+    img.s-0.bg-image.row(:class="scene0" src="/assets/images/high_res/big.jpg" ref="s0")
+    img.s-1.bg-image.row(:class="scene1" src="/assets/images/high_res/row1.jpg" ref="s1")
+    img.s-2.bg-image.col(:class="scene2" src="/assets/images/high_res/col1.jpg" ref="s2")
+    img.s-3.bg-image.row(:class="scene3" src="/assets/images/high_res/row2.jpg" ref="s3")
+    img.s-4.bg-image.col(:class="scene4" src="/assets/images/high_res/col2.jpg" ref="s4")
+    img.s-5.bg-image.row(:class="scene5" src="/assets/images/high_res/row3.jpg" ref="s5")
 </template>
 
 <script>
@@ -30,12 +30,13 @@ export default {
     scene0() {
       let classes = ''
       if (this.currentScene === 0) {
-        return 'show'
+        classes = 'show'
       } else if (this.currentScene === 1) {
-        return 'show animate-zoom-in'
+        classes = 'show animate-zoom-in'
       } else if (this.currentScene === 7) {
-        return 'show animate-zoom-out bl'
+        classes = 'show animate-zoom-out bl'
       }
+      return classes
     },
 
     scene1() {
