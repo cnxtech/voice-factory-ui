@@ -4,11 +4,16 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build && netlify-lambda build functions-src",
+    "lint": "vue-cli-service lint",
+    "lambda-serve": "netlify-lambda serve functions-src",
+    "lambda-build": "netlify-lambda build functions-src"
   },
   "dependencies": {
+    "aws-sdk": "^2.414.0",
     "axios": "^0.18.0",
+    "dotenv": "^6.2.0",
+    "netlify-lambda": "^1.4.2",
     "node-sass": "^4.11.0",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",

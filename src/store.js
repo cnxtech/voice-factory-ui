@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
   	query: '',
   	answer: '',
+    answerSoundfile: false,
   	entity: '',
     error: '',
   	intent: '',
@@ -23,6 +24,10 @@ export default new Vuex.Store({
 	  storeAnswer: function(state, val) {
 	    state.answer = val
 	  },
+
+    storeAnswerSoundfile: function(state, val) {
+      state.answerSoundfile = val
+    },
 
 	  storeEntity: function(state, val) {
 	    state.entity = val
@@ -58,6 +63,10 @@ export default new Vuex.Store({
 	    commit('storeAnswer', val)
   	},
 
+    setAnswerSoundfile({ commit }, val) {
+      commit('storeAnswerSoundfile', val)
+    },
+
   	setEntity({ commit }, val) {
 	    commit('storeEntity', val)
   	},
@@ -91,6 +100,10 @@ export default new Vuex.Store({
   	getAnswer(state) {
   		return state.answer
   	},
+
+    getAnswerSoundfile(state) {
+      return state.answerSoundfile
+    },
 
   	getEntity(state) {
   		return state.entity

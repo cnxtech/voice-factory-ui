@@ -40,6 +40,7 @@ export default {
     ...mapGetters({
       getQuery: 'getQuery',
       getAnswer: 'getAnswer',
+      getAnswerSoundfile: 'getAnswerSoundfile',
       getCurrentScene: 'getSceneNumber',
       getEntity: 'getEntity',
       getError: 'getError',
@@ -56,6 +57,7 @@ export default {
     ...mapActions({
       setQuery: 'setQuery',
       setAnswer: 'setAnswer',
+      setAnswerSoundfile: 'setAnswerSoundfile',
       setEntity: 'setEntity',
       setError: 'setError',
       setFollowUp: 'setFollowUp',
@@ -97,7 +99,8 @@ export default {
     },
 
     query(query) {
-      axios.post('https://api.jackomatic.com:8080/v1/ask', query)
+      this.setAnswerSoundfile = false
+      axios.post('https://api.jackomatic.com/v1/ask', query)
       .then( response => {
         this.parseResults(response.data.answerProperties)
       })
@@ -105,19 +108,21 @@ export default {
       })
     },
 
-    readAnswer() {
-      // this.$refs.speech.stop()
-      // let answer = new SpeechSynthesisUtterance(this.getAnswer)
-      // window.speechSynthesis.speak(answer)
-      // answer.onend = (e) => {
-      //   this.$refs.speech.start()
-      // }
+    getAnswerSpeech() {
+      const query = { text: this.getAnswer }
+      axios.post('https://voicefactory-staging.netlify.com/.netlify/functions/polly', query)
+      .then( response => {
+        this.setAnswerSoundfile(response.data.url)
+        console.log(this.getAnswerSoundfile)
+      })
+      .catch( error => {
+      })
     }
   },
 
   watch: {
     getAnswer() {
-      this.readAnswer()
+      this.getAnswerSpeech()
     }
   }
 }
