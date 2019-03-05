@@ -12,7 +12,7 @@
         h1 Entity: {{ getEntity }}
         h1 Answer: {{ getAnswer }}
         h1 Follow Up: {{ getFollowUp }}
-    audio(ref="audio" :src="getAnswerSoundfile" preload="auto" v-if='getAnswerSoundfile')
+    audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
 </template>
 
 <script>
@@ -52,6 +52,10 @@ export default {
     valid() {
       return this.result && this.result.responseType === 'FULFILLED'
     }
+  },
+
+  mounted() {
+    console.log(this.$refs.audio)
   },
 
   methods: {
