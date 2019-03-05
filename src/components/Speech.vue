@@ -126,6 +126,7 @@ export default {
     },
 
     getAnswerSoundfile() {
+      console.log(this.getAnswerSoundfile, this.$refs.audio)
       if(this.getAnswerSoundfile) {
         this.$refs.audio.play()
       }
