@@ -113,7 +113,9 @@ export default {
       const query = { text: this.getAnswer }
       axios.post('https://voicefactory-staging.netlify.com/.netlify/functions/polly', query)
       .then( response => {
+        console.log(this.getAnswerSoundfile)
         this.setAnswerSoundfile(response.data.url)
+        console.log(this.getAnswerSoundfile)
       })
       .catch( error => {
       })
