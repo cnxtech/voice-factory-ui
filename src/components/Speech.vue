@@ -103,6 +103,22 @@ export default {
       }
     },
 
+    playAudio() {
+      const play = this.$refs.audio.play()
+      if (play !== undefined) {
+        play.then(_ => {
+          // Automatic playback started!
+          // Show playing UI.
+          console.log('play')
+        })
+        .catch(error => {
+          // Auto-play was prevented
+          // Show paused UI.
+          console.log(error)
+        });
+      }
+    },
+
     query(query) {
       this.setAnswerSoundfile(false)
       axios.post('https://api.jackomatic.com/v1/ask', query)
@@ -117,9 +133,7 @@ export default {
       const query = { text: this.getAnswer }
       axios.post('https://voicefactory-staging.netlify.com/.netlify/functions/polly', query)
       .then( response => {
-        console.log(this.getAnswerSoundfile, response, response.data.url)
         this.setAnswerSoundfile(response.data.url)
-        console.log(this.getAnswerSoundfile)
       })
       .catch( error => {
       })
@@ -134,7 +148,7 @@ export default {
     getAnswerSoundfile() {
       console.log(this.getAnswerSoundfile, this.$refs.audio)
       if(this.getAnswerSoundfile) {
-        this.$refs.audio.play()
+        setTimeout(this.playAudio, 100)
       }
     }
   }
