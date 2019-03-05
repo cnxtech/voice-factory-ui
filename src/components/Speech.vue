@@ -100,7 +100,7 @@ export default {
     },
 
     query(query) {
-      this.setAnswerSoundfile = false
+      this.setAnswerSoundfile(false)
       axios.post('https://api.jackomatic.com/v1/ask', query)
       .then( response => {
         this.parseResults(response.data.answerProperties)
