@@ -1,17 +1,18 @@
 <template lang="pug">
   .nfl-speech-input
     speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
-    .content-container(v-if="getCurrentScene === 0")
+    .content-container
       h1 Please ask a question
       .query(v-if="getQuery.length > 0")
         h1 {{ getQuery }}?
       dot-loader(v-show="!result && showLoader")
-      // .content(v-if="result")
-      //  h1 State: {{ getError }}
-      //  h1 Intent: {{ getIntent }}
-      //  h1 Entity: {{ getEntity }}
-      //  h1 Answer: {{ getAnswer }}
-      //  h1 Follow Up: {{ getFollowUp }}
+      .content(v-if="result")
+        h1 State: {{ getError }}
+        h1 Intent: {{ getIntent }}
+        h1 Entity: {{ getEntity }}
+        h1 Answer: {{ getAnswer }}
+        h1 Follow Up: {{ getFollowUp }}
+    audio(ref="audio" :src="getAnswerSoundfile" preload="auto" v-if='getAnswerSoundfile')
 </template>
 
 <script>
@@ -113,7 +114,6 @@ export default {
       axios.post('https://voicefactory-staging.netlify.com/.netlify/functions/polly', query)
       .then( response => {
         this.setAnswerSoundfile(response.data.url)
-        console.log(this.getAnswerSoundfile)
       })
       .catch( error => {
       })
@@ -123,6 +123,12 @@ export default {
   watch: {
     getAnswer() {
       this.getAnswerSpeech()
+    },
+
+    getAnswerSoundfile() {
+      if(this.getAnswerSoundfile) {
+        this.$refs.audio.play()
+      }
     }
   }
 }
@@ -147,4 +153,6 @@ export default {
         text-align: center
         text-transform: capitalize
         margin-bottom: 2.5rem
+    audio
+      display: none
 </style>

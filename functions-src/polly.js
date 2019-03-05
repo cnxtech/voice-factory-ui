@@ -3,7 +3,8 @@ const AWS = require('aws-sdk')
 
 const headers = {
   "Access-Control-Allow-Origin" : "*",
-  "Access-Control-Allow-Headers": "Content-Type"
+  "Access-Control-Allow-Methods": "POST, GET",
+  "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
 }
 let statusCode = 200
 const key = process.env.KEY_AWS
