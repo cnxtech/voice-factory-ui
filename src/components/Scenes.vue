@@ -94,6 +94,7 @@ export default {
     backface-visibility: hidden
     will-change: transform
     display: none
+    opacity: 0.3
     &.row
       width: 300vw
       height: 100vh

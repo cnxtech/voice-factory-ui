@@ -128,7 +128,8 @@ export default {
 
     getAnswerSpeech() {
       const query = { text: this.getAnswer }
-      axios.post('https://voicefactory-staging.netlify.com/.netlify/functions/polly', query)
+      // axios.post('https://voicefactory-staging.netlify.com/.netlify/functions/polly', query)
+      axios.post('http://localhost:9000/.netlify/functions/polly', query)
       .then( response => {
         this.setAnswerSoundfile(response.data.url)
       })

@@ -22,3 +22,6 @@ yarn-error.log*
 
 # Lambda build files
 /functions
+
+# Vue config
+vue.config.js
