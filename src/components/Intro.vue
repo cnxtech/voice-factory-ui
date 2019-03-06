@@ -1,7 +1,7 @@
 <template lang="pug">
   .nfl-voice-intro(@click="playVideo")
     video(preload autoplay ref="nflVideo")
-      source(src="/assets/video/test.mp4" type="video/mp4")
+      source(src="/assets/video/test_long.mp4" type="video/mp4")
 </template>
 
 <script>
