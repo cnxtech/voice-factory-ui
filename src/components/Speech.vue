@@ -12,7 +12,7 @@
         h1 Entity: {{ getEntity }}
         h1 Answer: {{ getAnswer }}
         h1 Follow Up: {{ getFollowUp }}
-    audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
+    audio(ref="audio" :src="getAnswerSoundfile" preload="auto" onended="playerEnd")
 </template>
 
 <script>
@@ -52,10 +52,6 @@ export default {
     valid() {
       return this.result && this.result.responseType === 'FULFILLED'
     }
-  },
-
-  mounted() {
-    console.log(this.$refs.audio)
   },
 
   methods: {
@@ -104,19 +100,20 @@ export default {
     },
 
     playAudio() {
+      this.$refs.speech.stop()
       const play = this.$refs.audio.play()
       if (play !== undefined) {
         play.then(_ => {
-          // Automatic playback started!
-          // Show playing UI.
-          console.log('play')
+          //console.log('play')
         })
         .catch(error => {
-          // Auto-play was prevented
-          // Show paused UI.
           console.log(error)
         });
       }
+    },
+
+    playerEnd() {
+      this.$refs.speech.start()
     },
 
     query(query) {
@@ -146,7 +143,6 @@ export default {
     },
 
     getAnswerSoundfile() {
-      console.log(this.getAnswerSoundfile, this.$refs.audio)
       if(this.getAnswerSoundfile) {
         setTimeout(this.playAudio, 100)
       }

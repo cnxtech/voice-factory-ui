@@ -8,6 +8,7 @@ export default new Vuex.Store({
   	query: '',
   	answer: '',
     answerSoundfile: false,
+    soundCapture: false,
   	entity: '',
     error: '',
   	intent: '',
@@ -52,6 +53,10 @@ export default new Vuex.Store({
     storeSceneNumber: function(state, val) {
       state.currentScene = val
     },
+
+    storeSoundCapture: function(state, val) {
+      state.soundCapture = val
+    }
   },
 
   actions: {
@@ -89,6 +94,10 @@ export default new Vuex.Store({
 
     setSceneNumber({ commit }, val) {
       commit('storeSceneNumber', val)
+    },
+
+    setSoundCapture({ commit }, val) {
+      commit('storeSoundCapture', val)
     }
   },
 
@@ -127,6 +136,10 @@ export default new Vuex.Store({
 
     getSceneNumber(state) {
       return state.currentScene
+    },
+
+    getSoundCapture(state) {
+      return state.soundCapture
     }
   }
 })
