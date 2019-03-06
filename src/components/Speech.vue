@@ -2,14 +2,26 @@
   .nfl-speech-input
     speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
     .content-container
-      h1 Please ask a question
-      .query(v-if="getQuery.length > 0")
-        h1 {{ getQuery }}?
-      dot-loader(v-show="!result && showLoader")
-      .content(v-if="result")
-        h1 State: {{ getError }}
-        h1 Intent: {{ getIntent }}
-        h1 Entity: {{ getEntity }}
+      .content-scene-0(v-show="getCurrentScene === 0")
+        h1 Please ask a question
+        .query(v-if="getQuery.length > 0")
+          h1 {{ getQuery }}?
+        dot-loader(v-show="!result && showLoader")
+      .content-scene-1(v-show="result && getCurrentScene === 1")
+        h1 Processing request
+        dot-loader
+      .content-scene-2(v-show="result && getCurrentScene === 2")
+         h1 Intent & Entity mapping
+         h1 Intent: {{ getIntent }}
+         h1 Entity: {{ getEntity }}
+      .content-scene-3(v-show="result && getCurrentScene === 3")
+         h1 Answering the question
+      .content-scene-4(v-show="result && getCurrentScene === 4")
+         h1 Answering on Error
+         h1 State: {{ getError }}
+      .content-scene-5(v-show="result && getCurrentScene === 5")
+        h1 Looking for Media Content
+      .content-scene-6(v-show="result && getCurrentScene === 6")
         h1 Answer: {{ getAnswer }}
     audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
 </template>
@@ -87,6 +99,7 @@ export default {
       //   const ap = { answerProperties: this.getFullResponse }
       //   query = {...query, ...ap}
       // }
+      this.setQuery(transcription)
       this.query(query)
       this.result = false
       this.showLoader = true
@@ -98,7 +111,7 @@ export default {
 
     parseResults(data) {
       this.result = data
-      // this.setCurrentScene(1)
+      this.setCurrentScene(1)
       if (this.valid) {
         this.setIntent(data.responseIntentName)
         this.setFullResponse(data)
@@ -119,18 +132,11 @@ export default {
     playAudio() {
       this.$refs.speech.stop()
       const play = this.$refs.audio.play()
-      if (play !== undefined) {
-        play.then(_ => {
-          //console.log('play')
-        })
-        .catch(error => {
-          // console.log(error)
-        });
-      }
     },
 
     playerEnd() {
       this.$refs.speech.start()
+      this.setCurrentScene(7)
     },
 
     query(query) {
@@ -159,9 +165,11 @@ export default {
       this.getAnswerSpeech()
     },
 
-    getAnswerSoundfile() {
-      if(this.getAnswerSoundfile) {
-        setTimeout(this.playAudio, 100)
+    getCurrentScene() {
+      if (this.getCurrentScene === 0) {
+        this.setQuery('')
+      } else if(this.getAnswerSoundfile && this.getCurrentScene === 6) {
+        setTimeout(this.playAudio, 2000)
       }
     }
   }
@@ -180,13 +188,14 @@ export default {
     justify-content: center
     align-items: center
     .content-container
-      width: 75%
+      width: 80%
       height: auto
       padding-bottom: 10rem
       h1
         text-align: center
         text-transform: capitalize
         margin-bottom: 2.5rem
+        font-size: 6.5vw
     audio
       display: none
 </style>

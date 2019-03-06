@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import keyboardControl from '@/mixins/keyboardControl.js'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'SpeechToText',
+
+  mixins: [keyboardControl],
 
   props: {
     lang: {
@@ -19,6 +24,12 @@ export default {
       transcription: '',
       recognition: null
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      currentScene: 'getSceneNumber'
+    })
   },
 
   methods: {
@@ -64,11 +75,24 @@ export default {
 
     stop() {
       this.recognition.stop()
+    },
+
+    manualQuery(query) {
+      this.transcription = query
+      this.$emit('onEnd', this.transcription)
     }
   },
 
   mounted () {
     this.initApi()
   }
+
+  // watch: {
+  //   currentScene() {
+  //     if (this.currentScene === 0) {
+  //       this.initApi()
+  //     }
+  //   }
+  // }
 }
 </script>

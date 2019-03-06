@@ -6,12 +6,7 @@
     img.s-3.bg-image.row(:class="scene3" src="/assets/images/high_res/row2.jpg" ref="s3")
     img.s-4.bg-image.col(:class="scene4" src="/assets/images/high_res/col2.jpg" ref="s4")
     img.s-5.bg-image.row(:class="scene5" src="/assets/images/high_res/row3.jpg" ref="s5")
-    // img.s-0.bg-image.row(:class="scene0" src="/assets/images/big.jpg" ref="s0")
-    // img.s-1.bg-image.row(:class="scene1" src="/assets/images/row1.jpg" ref="s1")
-    // img.s-2.bg-image.col(:class="scene2" src="/assets/images/col1.jpg" ref="s2")
-    // img.s-3.bg-image.row(:class="scene3" src="/assets/images/row2.jpg" ref="s3")
-    // img.s-4.bg-image.col(:class="scene4" src="/assets/images/col2.jpg" ref="s4")
-    // img.s-5.bg-image.row(:class="scene5" src="/assets/images/row3.jpg" ref="s5")
+    audio(ref="background" src="/assets/audio/background.mp3" loop preload="auto")
 </template>
 
 <script>
@@ -19,6 +14,12 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Scenes',
+
+  data() {
+    return {
+      sequencer: false
+    }
+  },
 
   created() {
     window.addEventListener('keydown', this.handleKeys)
@@ -75,8 +76,38 @@ export default {
       if(/^([0-7])$/.test(e.key)) {
         this.setCurrentScene(parseInt(e.key))
       }
+    },
+
+    playBackgroundAudio() {
+      this.$refs.background.currentTime = 0
+      this.$refs.background.play()
+    },
+
+    stopBackgroundAudio() {
+      this.$refs.background.pause()
+    },
+
+    startAutomation() {
+      this.sequencer = setInterval(() => {
+        this.setCurrentScene(this.currentScene + 1)
+        if (this.currentScene === 6) {
+          clearInterval(this.sequencer)
+        }
+      }, 5000)
+      console.log(this.sequencer)
     }
   },
+
+  watch: {
+    currentScene() {
+      if (this.currentScene === 0) {
+        this.stopBackgroundAudio()
+      } else if (this.currentScene === 1) {
+        this.playBackgroundAudio()
+        this.startAutomation()
+      }
+    }
+  }
 }
 </script>
 
