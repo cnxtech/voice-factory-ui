@@ -45,6 +45,7 @@ export default {
       getEntity: 'getEntity',
       getError: 'getError',
       getFollowUp: 'getFollowUp',
+      getFullResponse: 'getFullResponse',
       getIntent: 'getIntent'
     }),
 
@@ -65,6 +66,7 @@ export default {
       setEntity: 'setEntity',
       setError: 'setError',
       setFollowUp: 'setFollowUp',
+      setFullResponse: 'setFullResponse',
       setIntent: 'setIntent',
       setCurrentScene: 'setSceneNumber'
     }),
@@ -75,11 +77,16 @@ export default {
     },
 
     onEnd(transcription) {
-      const query = {
+      let query = {
         questionProperties: {
           naturalLanguageQuery: transcription
         }
       }
+      // For future references.
+      // if (this.getFullResponse) {
+      //   const ap = { answerProperties: this.getFullResponse }
+      //   query = {...query, ...ap}
+      // }
       this.query(query)
       this.result = false
       this.showLoader = true
@@ -94,6 +101,7 @@ export default {
       // this.setCurrentScene(1)
       if (this.valid) {
         this.setIntent(data.responseIntentName)
+        this.setFullResponse(data)
         const ent = this.parseEntity(data.alignedVariables)
         this.setAnswer(data.fulfillmentResponses[0].fulfillment)
         this.setEntity(ent.key + ' / ' + ent.val)
@@ -116,7 +124,7 @@ export default {
           //console.log('play')
         })
         .catch(error => {
-          console.log(error)
+          // console.log(error)
         });
       }
     },

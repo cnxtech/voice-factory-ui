@@ -15,7 +15,7 @@ export default new Vuex.Store({
     followUp: '',
   	introEnded: false,
     currentScene: 0,
-
+    fullResponse: false
   },
 
   mutations: {
@@ -37,6 +37,10 @@ export default new Vuex.Store({
 
     storeError: function(state, val) {
       state.error = val
+    },
+
+    storeFullResponse: function(state, val) {
+      state.fullResponse = val
     },
 
 	  storeIntent: function(state, val) {
@@ -81,6 +85,10 @@ export default new Vuex.Store({
       commit('storeError', val)
     },
 
+    setFullResponse({ commit }, val) {
+      commit('storeFullResponse', val)
+    },
+
 		setIntent({ commit }, val) {
 	    commit('storeIntent', val)
   	},
@@ -121,6 +129,10 @@ export default new Vuex.Store({
 
     getError(state) {
       return state.error
+    },
+
+    getFullResponse(state) {
+      return state.fullResponse
     },
 
   	getIntent(state) {

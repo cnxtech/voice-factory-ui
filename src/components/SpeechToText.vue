@@ -59,12 +59,10 @@ export default {
     },
 
     start() {
-      console.log('start')
       this.recognition.start()
     },
 
     stop() {
-      console.log('stop')
       this.recognition.stop()
     }
   },
