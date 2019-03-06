@@ -14,7 +14,8 @@ export default new Vuex.Store({
   	intent: '',
     followUp: '',
   	introEnded: false,
-    currentScene: 0
+    currentScene: 0,
+
   },
 
   mutations: {

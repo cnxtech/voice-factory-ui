@@ -11,8 +11,7 @@
         h1 Intent: {{ getIntent }}
         h1 Entity: {{ getEntity }}
         h1 Answer: {{ getAnswer }}
-        h1 Follow Up: {{ getFollowUp }}
-    audio(ref="audio" :src="getAnswerSoundfile" preload="auto" onended="playerEnd")
+    audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
 </template>
 
 <script>
@@ -54,6 +53,10 @@ export default {
     }
   },
 
+  mounted() {
+    this.$refs.audio.addEventListener('ended', this.playerEnd)
+  },
+
   methods: {
     ...mapActions({
       setQuery: 'setQuery',
@@ -65,6 +68,11 @@ export default {
       setIntent: 'setIntent',
       setCurrentScene: 'setSceneNumber'
     }),
+
+    parseEntity(obj) {
+      const key = Object.keys(obj)[0]
+      return { key: key, val: obj[key]}
+    },
 
     onEnd(transcription) {
       const query = {
@@ -83,13 +91,14 @@ export default {
 
     parseResults(data) {
       this.result = data
-      this.setCurrentScene(1)
+      // this.setCurrentScene(1)
       if (this.valid) {
+        this.setIntent(data.responseIntentName)
+        const ent = this.parseEntity(data.alignedVariables)
         this.setAnswer(data.fulfillmentResponses[0].fulfillment)
-        this.setEntity(data.alignedVariables.FootballTerm)
+        this.setEntity(ent.key + ' / ' + ent.val)
         this.setError(data.responseType)
         this.setFollowUp(data.breadcrumbResponse.response)
-        this.setIntent(data.responseIntentName)
       } else {
         this.setAnswer('Sorry, I do not know the answer to this question.')
         this.setEntity('')
@@ -128,8 +137,7 @@ export default {
 
     getAnswerSpeech() {
       const query = { text: this.getAnswer }
-      // axios.post('https://voicefactory-staging.netlify.com/.netlify/functions/polly', query)
-      axios.post('http://localhost:9000/.netlify/functions/polly', query)
+      axios.post('/.netlify/functions/polly', query)
       .then( response => {
         this.setAnswerSoundfile(response.data.url)
       })
