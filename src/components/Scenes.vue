@@ -7,6 +7,7 @@
     img.s-4.bg-image.col(:class="scene4" src="/assets/images/high_res/col2.jpg" ref="s4")
     img.s-5.bg-image.row(:class="scene5" src="/assets/images/high_res/row3.jpg" ref="s5")
     audio(ref="background" src="/assets/audio/background.mp3" loop preload="auto")
+    audio(ref="vo" :src="currentVo" preload="auto")
 </template>
 
 <script>
@@ -33,6 +34,10 @@ export default {
     ...mapGetters({
       currentScene: 'getSceneNumber'
     }),
+
+    currentVo() {
+      return '/assets/audio/' + this.currentScene + '.mp3'
+    },
 
     scene0() {
       let classes = ''
@@ -83,18 +88,26 @@ export default {
       this.$refs.background.play()
     },
 
+    playVoAudio() {
+      this.$refs.vo.currentTime = 0
+      this.$refs.vo.play()
+    },
+
     stopBackgroundAudio() {
       this.$refs.background.pause()
+    },
+
+    stopVoAudio() {
+      this.$refs.vo.pause()
     },
 
     startAutomation() {
       this.sequencer = setInterval(() => {
         this.setCurrentScene(this.currentScene + 1)
-        if (this.currentScene === 6) {
+        if (this.currentScene === 7) {
           clearInterval(this.sequencer)
         }
       }, 5000)
-      console.log(this.sequencer)
     }
   },
 
@@ -106,6 +119,7 @@ export default {
         this.playBackgroundAudio()
         this.startAutomation()
       }
+      setTimeout(this.playVoAudio, 1000)
     }
   }
 }

@@ -1,6 +1,11 @@
 {
-	"players": [
-		"Who is Tom Brady",
-		"Who is Arron Rodgers"
-	]
+	"player": "Who is Jared Goff?",
+	"team": "Tell me more about the Chicago Bears.",
+	"superBowl": "What was the score of Super Bowl 35?",
+	"gamePlay": "What's a Blocking Sled?",
+	"jargon": "What's a Double Doink?",
+	"position": "What's a Long Snapper?",
+	"quantity": "How man AFC titles have the Denver Broncos won?",
+	"halfTime": "Who was the halftime performer of Super Bowl 25?",
+	"coaches": "Who is the head coach of the LA Rams?"
 }

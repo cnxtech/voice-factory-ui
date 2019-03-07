@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve && netlify-lambda serve functions-src",
     "build": "vue-cli-service build && netlify-lambda build functions-src",
     "lint": "vue-cli-service lint",
     "lambda-serve": "netlify-lambda serve functions-src",

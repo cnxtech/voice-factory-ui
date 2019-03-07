@@ -21,7 +21,7 @@
          h1 State: {{ getError }}
       .content-scene-5(v-show="result && getCurrentScene === 5")
         h1 Looking for Media Content
-      .content-scene-6(v-show="result && getCurrentScene === 6")
+      .content-scene-7(v-show="result && getCurrentScene === 7")
         h1 Answer: {{ getAnswer }}
     audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
 </template>
@@ -94,7 +94,7 @@ export default {
           naturalLanguageQuery: transcription
         }
       }
-      // For future references.
+      // TODO: For future references.
       // if (this.getFullResponse) {
       //   const ap = { answerProperties: this.getFullResponse }
       //   query = {...query, ...ap}
@@ -111,7 +111,7 @@ export default {
 
     parseResults(data) {
       this.result = data
-      this.setCurrentScene(1)
+      setTimeout(() => { this.setCurrentScene(1) }, 1000)
       if (this.valid) {
         this.setIntent(data.responseIntentName)
         this.setFullResponse(data)
@@ -136,7 +136,7 @@ export default {
 
     playerEnd() {
       this.$refs.speech.start()
-      this.setCurrentScene(7)
+      setTimeout(() => { this.setCurrentScene(0) }, 1000)
     },
 
     query(query) {
@@ -168,7 +168,7 @@ export default {
     getCurrentScene() {
       if (this.getCurrentScene === 0) {
         this.setQuery('')
-      } else if(this.getAnswerSoundfile && this.getCurrentScene === 6) {
+      } else if(this.getAnswerSoundfile && this.getCurrentScene === 7) {
         setTimeout(this.playAudio, 2000)
       }
     }
