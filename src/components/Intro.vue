@@ -3,7 +3,7 @@
     .screen-saver(:class="{ show: screenSaver }")
       h1 Screen Saver Placeholder
     video(preload ref="nflVideo" v-show="!getIntroState")
-      source(src="/assets/video/test_long.mp4" type="video/mp4")
+      source(src="/assets/video/current.m4v" type="video/mp4")
 </template>
 
 <script>

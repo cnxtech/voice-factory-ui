@@ -1,11 +1,11 @@
 <template lang="pug">
   .scene-manager(v-on:keyup.enter="handleKeys")
-    img.s-0.bg-image.row(:class="scene0" src="/assets/images/high_res/big.jpg" ref="s0")
-    img.s-1.bg-image.row(:class="scene1" src="/assets/images/high_res/row1.jpg" ref="s1")
-    img.s-2.bg-image.col(:class="scene2" src="/assets/images/high_res/col1.jpg" ref="s2")
-    img.s-3.bg-image.row(:class="scene3" src="/assets/images/high_res/row2.jpg" ref="s3")
-    img.s-4.bg-image.col(:class="scene4" src="/assets/images/high_res/col2.jpg" ref="s4")
-    img.s-5.bg-image.row(:class="scene5" src="/assets/images/high_res/row3.jpg" ref="s5")
+    img.s-0.bg-image.row(:class="scene0" src="/assets/images/high_res/big_colored.jpg" ref="s0")
+    img.s-1.bg-image.row(:class="scene1" src="/assets/images/high_res/row1_colored.jpg" ref="s1")
+    img.s-2.bg-image.col(:class="scene2" src="/assets/images/high_res/col1_colored.jpg" ref="s2")
+    img.s-3.bg-image.row(:class="scene3" src="/assets/images/high_res/row2_colored.jpg" ref="s3")
+    img.s-4.bg-image.col(:class="scene4" src="/assets/images/high_res/col2_colored.jpg" ref="s4")
+    img.s-5.bg-image.row(:class="scene5" src="/assets/images/high_res/row3_colored.jpg" ref="s5")
     audio(ref="background" src="/assets/audio/background.mp3" loop preload="auto")
     audio(ref="vo" :src="currentVo" preload="auto")
 </template>
