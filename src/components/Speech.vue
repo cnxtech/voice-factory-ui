@@ -215,6 +215,8 @@ export default {
         &.start
           &.show
             opacity: 1
+            transition: opacity .25s ease-in-out
+            transition-delay: .5s
       h1
         text-align: center
         text-transform: capitalize
