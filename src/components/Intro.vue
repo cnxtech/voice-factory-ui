@@ -48,7 +48,6 @@ export default {
     }),
 
     handleClick(e) {
-      console.log(e)
       if (e.key === 's') {
         this.screenSaver = false
         this.playVideo()

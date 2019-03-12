@@ -15,53 +15,58 @@ export default new Vuex.Store({
     followUp: '',
   	introEnded: false,
     currentScene: 0,
-    fullResponse: false
+    fullResponse: false,
+    voActive: false
   },
 
   mutations: {
-	 	storeQuery: function(state, val) {
+	 	storeQuery(state, val) {
 	    state.query = val
 	  },
 
-	  storeAnswer: function(state, val) {
+	  storeAnswer(state, val) {
 	    state.answer = val
 	  },
 
-    storeAnswerSoundfile: function(state, val) {
+    storeAnswerSoundfile(state, val) {
       state.answerSoundfile = val
     },
 
-	  storeEntity: function(state, val) {
+	  storeEntity(state, val) {
 	    state.entity = val
 	  },
 
-    storeError: function(state, val) {
+    storeError(state, val) {
       state.error = val
     },
 
-    storeFullResponse: function(state, val) {
+    storeFullResponse(state, val) {
       state.fullResponse = val
     },
 
-	  storeIntent: function(state, val) {
+	  storeIntent(state, val) {
 	  	state.intent = val
 	  },
 
-    storeFollowUp: function(state, val) {
+    storeFollowUp(state, val) {
       state.followUp = val
     },
 
-	  storeIntroState: function(state, val) {
+	  storeIntroState(state, val) {
 	  	state.introEnded = val
 	  },
 
-    storeSceneNumber: function(state, val) {
+    storeSceneNumber(state, val) {
       state.currentScene = val
     },
 
-    storeSoundCapture: function(state, val) {
+    storeSoundCapture(state, val) {
       state.soundCapture = val
-    }
+    },
+
+    storeVoActive(state, val) {
+      state.voActive = val
+    },
   },
 
   actions: {
@@ -107,7 +112,11 @@ export default new Vuex.Store({
 
     setSoundCapture({ commit }, val) {
       commit('storeSoundCapture', val)
-    }
+    },
+
+    setVoActive({ commit }, val) {
+      commit('storeVoActive', val)
+    },
   },
 
   getters: {
@@ -153,6 +162,10 @@ export default new Vuex.Store({
 
     getSoundCapture(state) {
       return state.soundCapture
+    },
+
+    getVoActive(state) {
+      return state.voActive
     }
   }
 })

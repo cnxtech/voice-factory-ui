@@ -72,9 +72,14 @@ export default {
     }
   },
 
+  mounted() {
+    this.$refs.vo.addEventListener('ended', this.playerEnd)
+  },
+
   methods: {
     ...mapActions({
-      setCurrentScene: 'setSceneNumber'
+      setCurrentScene: 'setSceneNumber',
+      setVoActive: 'setVoActive'
     }),
 
     handleKeys(e) {
@@ -91,6 +96,11 @@ export default {
     playVoAudio() {
       this.$refs.vo.currentTime = 0
       this.$refs.vo.play()
+      this.setVoActive(true)
+    },
+
+    playerEnd() {
+      this.setVoActive(false)
     },
 
     stopBackgroundAudio() {
@@ -104,7 +114,7 @@ export default {
     startAutomation() {
       this.sequencer = setInterval(() => {
         this.setCurrentScene(this.currentScene + 1)
-        if (this.currentScene === 7) {
+        if (this.currentScene === 6) {
           clearInterval(this.sequencer)
         }
       }, 5000)
@@ -119,7 +129,7 @@ export default {
         this.playBackgroundAudio()
         this.startAutomation()
       }
-      setTimeout(this.playVoAudio, 1000)
+      setTimeout(this.playVoAudio, 2000)
     }
   }
 }
@@ -139,7 +149,7 @@ export default {
     backface-visibility: hidden
     will-change: transform
     display: none
-    opacity: 0.3
+    opacity: 1
     &.row
       width: 300vw
       height: 100vh

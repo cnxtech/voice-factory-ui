@@ -2,27 +2,26 @@
   .nfl-speech-input
     speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
     .content-container
-      .content-scene-0(v-show="getCurrentScene === 0")
+      .content-scene.start(:class="{ show: getCurrentScene === 0 }")
         h1 Please ask a question
         .query(v-if="getQuery.length > 0")
-          h1 {{ getQuery }}?
+          h1 {{ getQuery }}
         dot-loader(v-show="!result && showLoader")
-      .content-scene-1(v-show="result && getCurrentScene === 1")
-        h1 Processing request
-        dot-loader
-      .content-scene-2(v-show="result && getCurrentScene === 2")
-         h1 Intent & Entity mapping
-         h1 Intent: {{ getIntent }}
-         h1 Entity: {{ getEntity }}
-      .content-scene-3(v-show="result && getCurrentScene === 3")
-         h1 Answering the question
-      .content-scene-4(v-show="result && getCurrentScene === 4")
-         h1 Answering on Error
-         h1 State: {{ getError }}
-      .content-scene-5(v-show="result && getCurrentScene === 5")
-        h1 Looking for Media Content
-      .content-scene-7(v-show="result && getCurrentScene === 7")
-        h1 Answer: {{ getAnswer }}
+      // .content-scene(:class="{ show: showSceneContent(1) }")
+      //   h1 Processing request
+      //   dot-loader
+      .content-scene(:class="{ show: showSceneContent(2) }")
+        h1.intent {{ getIntent }}
+        h1.entity {{ getEntity }}
+      // .content-scene(:class="{ show: showSceneContent(3) }")
+      //   h1 Answering the question
+      // .content-scene(:class="{ show: showSceneContent(4) }")
+      //  h1 Answering on Error
+      //  h1 State: {{ getError }}
+      // .content-scene(:class="{ show: showSceneContent(5) }")
+      //   h1 Looking for Media Content
+      // .content-scene(:class="{ show: showSceneContent(7) }")
+      //   h1 Answer: {{ getAnswer }}
     audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
 </template>
 
@@ -58,7 +57,8 @@ export default {
       getError: 'getError',
       getFollowUp: 'getFollowUp',
       getFullResponse: 'getFullResponse',
-      getIntent: 'getIntent'
+      getIntent: 'getIntent',
+      getVoActive: 'getVoActive'
     }),
 
     valid() {
@@ -117,7 +117,7 @@ export default {
         this.setFullResponse(data)
         const ent = this.parseEntity(data.alignedVariables)
         this.setAnswer(data.fulfillmentResponses[0].fulfillment)
-        this.setEntity(ent.key + ' / ' + ent.val)
+        this.setEntity(ent.val)
         this.setError(data.responseType)
         this.setFollowUp(data.breadcrumbResponse.response)
       } else {
@@ -131,16 +131,19 @@ export default {
 
     playAudio() {
       this.$refs.speech.stop()
-      const play = this.$refs.audio.play()
+      setTimeout(() => {
+        this.$refs.audio.play()
+      }, 500)
     },
 
     playerEnd() {
       this.$refs.speech.start()
-      setTimeout(() => { this.setCurrentScene(0) }, 1000)
+      setTimeout(() => { this.setCurrentScene(7) }, 100)
     },
 
     query(query) {
       this.setAnswerSoundfile(false)
+      this.$refs.speech.stop()
       axios.post('https://api.jackomatic.com/v1/ask', query)
       .then( response => {
         this.parseResults(response.data.answerProperties)
@@ -157,6 +160,10 @@ export default {
       })
       .catch( error => {
       })
+    },
+
+    showSceneContent(id) {
+      return this.result && this.getCurrentScene === id
     }
   },
 
@@ -168,8 +175,14 @@ export default {
     getCurrentScene() {
       if (this.getCurrentScene === 0) {
         this.setQuery('')
-      } else if(this.getAnswerSoundfile && this.getCurrentScene === 7) {
-        setTimeout(this.playAudio, 2000)
+      } else if (this.getCurrentScene === 7) {
+        setTimeout(() => this.setCurrentScene(0), 3000)
+      }
+    },
+
+    getVoActive() {
+      if(this.getAnswerSoundfile && this.getCurrentScene === 6 && !this.getVoActive) {
+        setTimeout(this.playAudio, 1000)
       }
     }
   }
@@ -191,11 +204,36 @@ export default {
       width: 80%
       height: auto
       padding-bottom: 10rem
+      .content-scene
+        opacity: 0
+        transition: opacity 1s ease-in-out
+        &:not(.start)
+          &.show
+            opacity: 1
+            transition: opacity .25s ease-in-out
+            transition-delay: 3s
+        &.start
+          &.show
+            opacity: 1
       h1
         text-align: center
         text-transform: capitalize
         margin-bottom: 2.5rem
         font-size: 6.5vw
+        &.intent, &.entity
+          position: fixed
+          word-wrap: break-word
+          font-size: 4rem
+        &.intent
+          top: 40rem
+          left: 34rem
+          width: 18rem
+          color: #c9f56a
+        &.entity
+          top: 184rem
+          left: 82rem
+          width: 22rem
+          color: #693c39
     audio
       display: none
 </style>
