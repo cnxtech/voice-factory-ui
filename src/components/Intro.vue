@@ -81,7 +81,7 @@ export default {
         this.playVideo()
       } else if (e.key === 'f') {
         this.setIntroState(true)
-        this.scenterVcenter()
+        // this.scenterVcenter()
         this.screenSaver = false
       }
     },
