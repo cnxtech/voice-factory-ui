@@ -2,7 +2,7 @@
   .scene-manager(v-on:keyup.enter="handleKeys")
     img.s-0.bg-image.row(:class="scene0" src="/assets/images/high_res/big_colored.jpg" ref="s0")
     // img.s-1.bg-image.row(:class="scene1" src="/assets/images/high_res/row1_colored.jpg" ref="s1")
-    video.s-1(v-show="currentScene === 1" ref="videoSceneOne")
+    video.s-1(:class="{ show: currentScene === 1 }" ref="videoSceneOne")
       source(src="/assets/video/test_anim.m4v" type="video/mp4")
     img.s-2.bg-image.col(:class="scene2" src="/assets/images/high_res/col1_colored.jpg" ref="s2")
     img.s-3.bg-image.row(:class="scene3" src="/assets/images/high_res/row2_colored.jpg" ref="s3")
@@ -174,4 +174,9 @@ export default {
     height: 100vh
     object-fit: cover
     object-position: top left
+    opacity: 0
+    &.show
+      opacity: 1
+      transition: opacity .5s ease-in-out
+      transition-delay: 3s
 </style>
