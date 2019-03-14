@@ -11,14 +11,14 @@
       //   h1 Processing request
       //   dot-loader
       .content-scene(:class="{ show: showSceneContent(2) }")
-        h1.intent {{ getIntent }}
+        h1.intent {{ intentMapping[getIntent] }}
         h1.entity {{ getEntity }}
       // .content-scene(:class="{ show: showSceneContent(3) }")
       //   h1 Answering the question
       // .content-scene(:class="{ show: showSceneContent(4) }")
       //  h1 Answering on Error
       //  h1 State: {{ getError }}
-      // .content-scene(:class="{ show: showSceneContent(5) }")
+      // .content-scene(:class="{ show: showSceneCo ntent(5) }")
       //   h1 Looking for Media Content
       // .content-scene(:class="{ show: showSceneContent(7) }")
       //   h1 Answer: {{ getAnswer }}
@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios'
+import json from '@/assets/json/intentMapping.json'
 import SpeechToText from './SpeechToText.vue'
 import DotLoader from './DotLoader.vue'
 import { mapActions, mapGetters } from 'vuex'
@@ -43,6 +44,7 @@ export default {
     return {
       result: false,
       currentTranscription: '',
+      intentMapping: json,
       showLoader: false
     }
   },
@@ -184,6 +186,10 @@ export default {
       if(this.getAnswerSoundfile && this.getCurrentScene === 6 && !this.getVoActive) {
         setTimeout(this.playAudio, 1000)
       }
+    },
+
+    getIntent() {
+      console.log(this.intentMapping, this.getIntent)
     }
   }
 }

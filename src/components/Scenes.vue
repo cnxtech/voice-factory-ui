@@ -117,7 +117,7 @@ export default {
         if (this.currentScene === 6) {
           clearInterval(this.sequencer)
         }
-      }, 5000)
+      }, 10000)
     }
   },
 
