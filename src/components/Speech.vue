@@ -11,7 +11,7 @@
       //   h1 Processing request
       //   dot-loader
       .content-scene(:class="{ show: showSceneContent(2) }")
-        h1.intent {{ getIntent }}
+        h1.intent {{ intentMapping[getIntent] }}
         h1.entity {{ getEntity }}
       // .content-scene(:class="{ show: showSceneContent(3) }")
       //   h1 Answering the question
@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios'
+import json from '@/assets/json/intentMapping.json'
 import SpeechToText from './SpeechToText.vue'
 import DotLoader from './DotLoader.vue'
 import { mapActions, mapGetters } from 'vuex'
@@ -43,6 +44,7 @@ export default {
     return {
       result: false,
       currentTranscription: '',
+      intentMapping: json,
       showLoader: false
     }
   },
@@ -200,6 +202,7 @@ export default {
     display: flex
     justify-content: center
     align-items: center
+    z-index: 99999999999999999
     .content-container
       width: 80%
       height: auto
@@ -211,7 +214,7 @@ export default {
           &.show
             opacity: 1
             transition: opacity .25s ease-in-out
-            transition-delay: 3s
+            transition-delay: 1s
         &.start
           &.show
             opacity: 1
@@ -226,15 +229,16 @@ export default {
           position: fixed
           word-wrap: break-word
           font-size: 4rem
+          z-index: 9999999999
         &.intent
-          top: 40rem
-          left: 34rem
-          width: 18rem
+          top: 37.5rem
+          left: 30rem
+          width: 40rem
           color: #c9f56a
         &.entity
           top: 184rem
-          left: 82rem
-          width: 22rem
+          left: 78rem
+          width: 40rem
           color: #693c39
     audio
       display: none
