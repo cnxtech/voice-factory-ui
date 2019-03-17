@@ -10,6 +10,7 @@ export default new Vuex.Store({
     answerSoundfile: false,
     soundCapture: false,
   	entity: '',
+    entityDisplay: true,
     error: '',
   	intent: '',
     followUp: '',
@@ -35,6 +36,10 @@ export default new Vuex.Store({
 	  storeEntity(state, val) {
 	    state.entity = val
 	  },
+
+    storeEntityDisplay(state, val) {
+      state.entityDisplay = val
+    },
 
     storeError(state, val) {
       state.error = val
@@ -86,6 +91,10 @@ export default new Vuex.Store({
 	    commit('storeEntity', val)
   	},
 
+    setEntityDisplay({ commit }, val) {
+      commit('storeEntityDisplay', val)
+    },
+
     setError({ commit }, val) {
       commit('storeError', val)
     },
@@ -135,6 +144,10 @@ export default new Vuex.Store({
   	getEntity(state) {
   		return state.entity
   	},
+
+    getEntityDisplay(state) {
+      return state.entityDisplay
+    },
 
     getError(state) {
       return state.error

@@ -6,22 +6,10 @@
         h1 Please ask a question
         .query(v-if="getQuery.length > 0")
           h1 {{ getQuery }}
-        dot-loader(v-show="!result && showLoader")
-      // .content-scene(:class="{ show: showSceneContent(1) }")
-      //   h1 Processing request
-      //   dot-loader
+        // dot-loader(v-show="!result && showLoader")
       .content-scene(:class="{ show: showSceneContent(2) }")
         h1.intent {{ intentMapping[getIntent] }}
         h1.entity {{ getEntity }}
-      // .content-scene(:class="{ show: showSceneContent(3) }")
-      //   h1 Answering the question
-      // .content-scene(:class="{ show: showSceneContent(4) }")
-      //  h1 Answering on Error
-      //  h1 State: {{ getError }}
-      // .content-scene(:class="{ show: showSceneContent(5) }")
-      //   h1 Looking for Media Content
-      // .content-scene(:class="{ show: showSceneContent(7) }")
-      //   h1 Answer: {{ getAnswer }}
     audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
 </template>
 
@@ -56,6 +44,7 @@ export default {
       getAnswerSoundfile: 'getAnswerSoundfile',
       getCurrentScene: 'getSceneNumber',
       getEntity: 'getEntity',
+      getEntityDisplay: 'getEntityDisplay',
       getError: 'getError',
       getFollowUp: 'getFollowUp',
       getFullResponse: 'getFullResponse',
@@ -85,9 +74,10 @@ export default {
       setCurrentScene: 'setSceneNumber'
     }),
 
-    parseEntity(obj) {
-      const key = Object.keys(obj)[0]
-      return { key: key, val: obj[key]}
+    grabSSML(r) {
+      r.map(o => {
+        return o.type === 'SSML'
+      })
     },
 
     onEnd(transcription) {
@@ -96,11 +86,14 @@ export default {
           naturalLanguageQuery: transcription
         }
       }
-      // TODO: For future references.
-      // if (this.getFullResponse) {
-      //   const ap = { answerProperties: this.getFullResponse }
-      //   query = {...query, ...ap}
-      // }
+
+      // If we have previous response, add to query
+      if (this.getFullResponse) {
+        const ap = { answerProperties: this.getFullResponse }
+        query = {...query, ...ap}
+        console.log(query)
+      }
+
       this.setQuery(transcription)
       this.query(query)
       this.result = false
@@ -111,6 +104,11 @@ export default {
       this.setQuery(transcription)
     },
 
+    parseEntity(obj) {
+      const key = Object.keys(obj)[0]
+      return { key: key, val: obj[key]}
+    },
+
     parseResults(data) {
       this.result = data
       setTimeout(() => { this.setCurrentScene(1) }, 1000)
@@ -118,6 +116,7 @@ export default {
         this.setIntent(data.responseIntentName)
         this.setFullResponse(data)
         const ent = this.parseEntity(data.alignedVariables)
+        const ans = this.grabSSML(data.fulfillmentResponses)
         this.setAnswer(data.fulfillmentResponses[0].fulfillment)
         this.setEntity(ent.val)
         this.setError(data.responseType)
@@ -140,7 +139,7 @@ export default {
 
     playerEnd() {
       this.$refs.speech.start()
-      setTimeout(() => { this.setCurrentScene(7) }, 100)
+      setTimeout(() => { this.setCurrentScene(0) }, 1000)
     },
 
     query(query) {
@@ -165,7 +164,7 @@ export default {
     },
 
     showSceneContent(id) {
-      return this.result && this.getCurrentScene === id
+      return this.result && this.getCurrentScene === id && this.getEntityDisplay
     }
   },
 
@@ -177,14 +176,8 @@ export default {
     getCurrentScene() {
       if (this.getCurrentScene === 0) {
         this.setQuery('')
-      } else if (this.getCurrentScene === 7) {
-        setTimeout(() => this.setCurrentScene(0), 3000)
-      }
-    },
-
-    getVoActive() {
-      if(this.getAnswerSoundfile && this.getCurrentScene === 6 && !this.getVoActive) {
-        setTimeout(this.playAudio, 1000)
+      } else if (this.getCurrentScene === 7 && this.getAnswerSoundfile) {
+        setTimeout(this.playAudio, 500)
       }
     }
   }
@@ -231,12 +224,12 @@ export default {
           font-size: 4rem
           z-index: 9999999999
         &.intent
-          top: 37.5rem
+          top: 34.5rem
           left: 30rem
           width: 40rem
           color: #c9f56a
         &.entity
-          top: 184rem
+          top: 186rem
           left: 78rem
           width: 40rem
           color: #693c39
