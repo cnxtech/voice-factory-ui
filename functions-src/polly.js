@@ -19,7 +19,7 @@ exports.handler = function(event, context, callback) {
     let speechParams = {
       OutputFormat: "mp3",
       SampleRate: "16000",
-      TextType: "ssml",
+      TextType: "text",
       Text: "hello it is great to meet you",
       VoiceId: "Matthew"
     }
