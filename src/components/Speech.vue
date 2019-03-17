@@ -91,7 +91,6 @@ export default {
       if (this.getFullResponse) {
         const ap = { answerProperties: this.getFullResponse }
         query = {...query, ...ap}
-        console.log(query)
       }
 
       this.setQuery(transcription)
@@ -179,10 +178,6 @@ export default {
       } else if (this.getCurrentScene === 7 && this.getAnswerSoundfile) {
         setTimeout(this.playAudio, 500)
       }
-    },
-
-    getIntent() {
-      console.log(this.intentMapping, this.getIntent)
     }
   }
 }
