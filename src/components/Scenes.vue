@@ -171,12 +171,6 @@ export default {
     },
 
     startAutomation() {
-      // this.sequencer = setInterval(() => {
-      //   this.setCurrentScene(this.currentScene + 1)
-      //   if (this.currentScene === 6) {
-      //     clearInterval(this.sequencer)
-      //   }
-      // }, 5000)
       this.$refs.videoSceneOne.currentTime = 0
       setTimeout(() => {
         this.$refs.videoSceneOne.play()

@@ -179,6 +179,10 @@ export default {
       } else if (this.getCurrentScene === 7 && this.getAnswerSoundfile) {
         setTimeout(this.playAudio, 500)
       }
+    },
+
+    getIntent() {
+      console.log(this.intentMapping, this.getIntent)
     }
   }
 }
