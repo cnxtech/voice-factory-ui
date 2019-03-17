@@ -16,12 +16,10 @@ const polly = new AWS.Polly({apiVersion: '2016-06-10'})
 
 exports.handler = function(event, context, callback) {
 
-    console.log(key, secret)
-
     let speechParams = {
       OutputFormat: "mp3",
       SampleRate: "16000",
-      TextType: "text",
+      TextType: "ssml",
       Text: "hello it is great to meet you",
       VoiceId: "Matthew"
     }

@@ -1,11 +1,10 @@
 <template lang="pug">
   .scene-manager(v-on:keyup.enter="handleKeys")
     img.s-0.bg-image.row(:class="scene0" src="/assets/images/high_res/big_colored.jpg" ref="s0")
-    img.s-1.bg-image.row(:class="scene1" src="/assets/images/high_res/row1_colored.jpg" ref="s1")
-    img.s-2.bg-image.col(:class="scene2" src="/assets/images/high_res/col1_colored.jpg" ref="s2")
-    img.s-3.bg-image.row(:class="scene3" src="/assets/images/high_res/row2_colored.jpg" ref="s3")
-    img.s-4.bg-image.col(:class="scene4" src="/assets/images/high_res/col2_colored.jpg" ref="s4")
-    img.s-5.bg-image.row(:class="scene5" src="/assets/images/high_res/row3_colored.jpg" ref="s5")
+    video.s-1(:class="{ show: currentScene < 7 && currentScene >= 1 }" ref="videoSceneOne")
+      source(src="https://s3-us-west-1.amazonaws.com/macrotest/final.mp4" type="video/mp4")
+    video.s-7(:class="{ show: currentScene === 7 }" ref="videoAnswer" loop preload="metadata")
+      source(src="/assets/video/answer.mp4" type="video/mp4")
     audio(ref="background" src="/assets/audio/background.mp3" loop preload="auto")
     audio(ref="vo" :src="currentVo" preload="auto")
 </template>
@@ -18,7 +17,8 @@ export default {
 
   data() {
     return {
-      sequencer: false
+      sequencer: false,
+      backgroundVolume: 0.5
     }
   },
 
@@ -28,15 +28,23 @@ export default {
 
   destroyed() {
     window.removeEventListener('keydown', this.handleKeys)
+    this.$refs.videoSceneOne.removeEventListener('ended', this.sceneOneEnd)
+    this.$refs.videoSceneOne.removeEventListener('timeupdate', this.durationHandler)
   },
 
   computed: {
     ...mapGetters({
-      currentScene: 'getSceneNumber'
+      currentScene: 'getSceneNumber',
+      getEntityDisplay: 'getEntityDisplay'
     }),
 
     currentVo() {
-      return '/assets/audio/' + this.currentScene + '.mp3'
+      const s = this.currentScene
+      if (s !== 0 && s !== 3 && s !==7) {
+        return '/assets/audio/' + this.currentScene + '.mp3'
+      } else {
+        return '/assets/audio/1.mp3'
+      }
     },
 
     scene0() {
@@ -46,7 +54,7 @@ export default {
       } else if (this.currentScene === 1) {
         classes = 'show animate-zoom-in'
       } else if (this.currentScene === 7) {
-        classes = 'show animate-zoom-out bl'
+        classes = 'show'
       }
       return classes
     },
@@ -74,13 +82,55 @@ export default {
 
   mounted() {
     this.$refs.vo.addEventListener('ended', this.playerEnd)
+    this.$refs.videoSceneOne.addEventListener('ended', this.sceneOneEnd)
+    this.$refs.videoSceneOne.addEventListener('timeupdate', this.durationHandler)
   },
 
   methods: {
     ...mapActions({
       setCurrentScene: 'setSceneNumber',
+      setEntityDisplay: 'setEntityDisplay',
       setVoActive: 'setVoActive'
     }),
+
+    durationHandler(e) {
+      const t = this.$refs.videoSceneOne.currentTime
+      if (t > 11 && this.currentScene === 1) {
+        this.setCurrentScene(2)
+        this.setEntityDisplay(true)
+      } else if (t > 20 && this.currentScene === 2) {
+        this.setCurrentScene(3)
+      } else if (t > 31 && this.currentScene === 3) {
+        this.setCurrentScene(4)
+      } else if (t > 40 && this.currentScene === 4) {
+        this.setCurrentScene(5)
+      } else if (t > 51 && this.currentScene === 5) {
+        this.setCurrentScene(6)
+      } else if (t > 65 && this.currentScene === 6) {
+        this.setCurrentScene(7)
+      } else if (this.currentScene === 7) {
+        this.$refs.videoSceneOne.pause()
+        this.$refs.videoAnswer.volume = 0
+        this.$refs.videoAnswer.play()
+      }
+
+      if (t > 17 && this.setEntityDisplay) {
+        this.setEntityDisplay(false)
+      }
+
+    },
+
+    fadeAudio() {
+      let fadeInterval = setInterval(() => {
+        if(this.backgroundVolume <= 0){
+          this.stopBackgroundAudio()
+          clearInterval(fadeInterval)
+          this.backgroundVolume = 1
+          return
+        }
+        this.backgroundVolume -= 0.01
+      }, 30)
+    },
 
     handleKeys(e) {
       if(/^([0-7])$/.test(e.key)) {
@@ -90,17 +140,26 @@ export default {
 
     playBackgroundAudio() {
       this.$refs.background.currentTime = 0
+      this.$refs.background.volume = this.backgroundVolume
       this.$refs.background.play()
     },
 
     playVoAudio() {
-      this.$refs.vo.currentTime = 0
-      this.$refs.vo.play()
-      this.setVoActive(true)
+      const s = this.currentScene
+      if (s !== 0 && s !== 3 && s !==7) {
+        this.$refs.vo.currentTime = 0
+        this.$refs.vo.play()
+        this.setVoActive(true)
+      }
     },
 
     playerEnd() {
       this.setVoActive(false)
+    },
+
+    sceneOneEnd() {
+      // this.setCurrentScene(7)
+      // this.$refs.videoSceneTwo.play()
     },
 
     stopBackgroundAudio() {
@@ -112,12 +171,10 @@ export default {
     },
 
     startAutomation() {
-      this.sequencer = setInterval(() => {
-        this.setCurrentScene(this.currentScene + 1)
-        if (this.currentScene === 6) {
-          clearInterval(this.sequencer)
-        }
-      }, 10000)
+      this.$refs.videoSceneOne.currentTime = 0
+      setTimeout(() => {
+        this.$refs.videoSceneOne.play()
+      }, 2900)
     }
   },
 
@@ -128,6 +185,8 @@ export default {
       } else if (this.currentScene === 1) {
         this.playBackgroundAudio()
         this.startAutomation()
+      } else if (this.currentScene === 7) {
+        setTimeout(this.fadeAudio(), 500)
       }
       setTimeout(this.playVoAudio, 2000)
     }
@@ -166,4 +225,22 @@ export default {
       opacity: 0.3
       &.bl
         object-position: bottom right
+  video
+    width: 100vw
+    height: 100vh
+    object-fit: cover
+    object-position: top left
+    opacity: 0
+    position: fixed
+    top: 0
+    left: 0
+    &.s-1
+      &.show
+        opacity: 1
+        transition: opacity .01s ease-in-out
+        transition-delay: 3s
+    &.s-7
+      &.show
+        opacity: 1
+        transition: opacity .5s ease-in-out
 </style>

@@ -1,6 +1,6 @@
 <template lang="pug">
   .nfl-voice-intro(@keydown="handleClick")
-    .screen-saver(:class="{ show: screenSaver }")
+    .screen-saver(v-if="screenSaver")
       swiper(:options="swiperOption")
         swiper-slide(v-for="image in images")
           img.slide(:src="image")
@@ -116,14 +116,11 @@ export default {
       z-index: 99
       background-color: #FFF
       transition: opacity .05s ease-in-out
-      opacity: 0
-      &.show
-        opacity: 1
-        .slide
-          width: 100%
-          height: 100%
-          object-fit: cover
-          object-position: center center
+      .slide
+        width: 100%
+        height: 100%
+        object-fit: cover
+        object-position: center center
     video
       width: 100vw
       height: 100vh
