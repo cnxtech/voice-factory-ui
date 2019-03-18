@@ -40,10 +40,7 @@ export default {
         '/assets/images/screensaver/2.jpg',
         '/assets/images/screensaver/3.jpg',
         '/assets/images/screensaver/4.jpg',
-        '/assets/images/screensaver/5.jpg',
-        '/assets/images/screensaver/6.jpg',
-        '/assets/images/screensaver/7.jpg',
-        '/assets/images/screensaver/8.jpg'
+        '/assets/images/screensaver/5.jpg'
       ]
     }
   },
