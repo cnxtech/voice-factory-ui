@@ -3,13 +3,15 @@
     speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
     .content-container
       .content-scene.start(:class="{ show: getCurrentScene === 0 }")
-        h1 Please ask a question
+        // h1 Please ask a question
         .query(v-if="getQuery.length > 0")
           h1 {{ getQuery }}
         // dot-loader(v-show="!result && showLoader")
       .content-scene(:class="{ show: showSceneContent(2) }")
         h1.intent {{ intentMapping[getIntent] }}
         h1.entity {{ getEntity }}
+      .content-scene(:class="{ show: getCurrentScene === 7 }")
+        h1 {{ getAnswer }}
     audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
 </template>
 
@@ -201,17 +203,17 @@ export default {
       padding-bottom: 10rem
       .content-scene
         opacity: 0
-        transition: opacity 1s ease-in-out
+        transition: opacity .25s ease-in-out
         &:not(.start)
           &.show
             opacity: 1
             transition: opacity .25s ease-in-out
-            transition-delay: 1s
+            transition-delay: .25s
         &.start
           &.show
             opacity: 1
             transition: opacity .25s ease-in-out
-            transition-delay: .5s
+            transition-delay: .25s
       h1
         text-align: center
         text-transform: capitalize
