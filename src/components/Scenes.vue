@@ -2,7 +2,7 @@
   .scene-manager(v-on:keyup.enter="handleKeys")
     img.s-0.bg-image.row(:class="scene0" src="/assets/images/high_res/big_colored.jpg" ref="s0")
     video.s-1(:class="{ show: currentScene < 7 && currentScene >= 1 }" ref="videoSceneOne")
-      source(src="https://s3-us-west-1.amazonaws.com/macrotest/final.mp4" type="video/mp4")
+      source(src="https://s3.amazonaws.com/voice-factory-assets/FINAL.mp4" type="video/mp4")
     video.s-7(:class="{ show: currentScene === 7 }" ref="videoAnswer" loop preload="metadata")
       source(src="/assets/video/answer.mp4" type="video/mp4")
     audio(ref="background" src="/assets/audio/background.mp3" loop preload="auto")
