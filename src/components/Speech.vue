@@ -11,7 +11,7 @@
         h1.intent {{ intentMapping[getIntent] }}
         h1.entity {{ getEntity }}
       .content-scene(:class="{ show: getCurrentScene === 7 }")
-        h1 {{ getAnswer }}
+        h1.answer {{ getAnswer }}
     audio(ref="audio" :src="getAnswerSoundfile" preload="auto")
 </template>
 
@@ -51,6 +51,7 @@ export default {
       getFollowUp: 'getFollowUp',
       getFullResponse: 'getFullResponse',
       getIntent: 'getIntent',
+      getSkipAnimation: 'getSkipAnimation',
       getVoActive: 'getVoActive'
     }),
 
@@ -112,7 +113,13 @@ export default {
 
     parseResults(data) {
       this.result = data
-      setTimeout(() => { this.setCurrentScene(1) }, 1000)
+
+      if(this.getSkipAnimation) {
+        setTimeout(() => { this.setCurrentScene(7) }, 500)
+      } else {
+        setTimeout(() => { this.setCurrentScene(1) }, 500)
+      }
+
       if (this.valid) {
         this.setIntent(data.responseIntentName)
         this.setFullResponse(data)
@@ -175,6 +182,7 @@ export default {
     },
 
     getCurrentScene() {
+      console.log(this.getCurrentScene)
       if (this.getCurrentScene === 0) {
         this.setQuery('')
       } else if (this.getCurrentScene === 7 && this.getAnswerSoundfile) {
@@ -204,6 +212,11 @@ export default {
       .content-scene
         opacity: 0
         transition: opacity .25s ease-in-out
+        .query
+          position: fixed
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
         &:not(.start)
           &.show
             opacity: 1
@@ -218,7 +231,7 @@ export default {
         text-align: center
         text-transform: capitalize
         margin-bottom: 2.5rem
-        font-size: 6.5vw
+        font-size: 5.5vw
         &.intent, &.entity
           position: fixed
           word-wrap: break-word
@@ -234,6 +247,10 @@ export default {
           left: 78rem
           width: 40rem
           color: #693c39
+        &.answer
+          width: 60vw
+          margin: auto
+          text-align: center
     audio
       display: none
 </style>

@@ -4,7 +4,7 @@
 
 <script>
 import keyboardControl from '@/mixins/keyboardControl.js'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'SpeechToText',
@@ -33,6 +33,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      setSkipAnimation: 'setSkipAnimation'
+    }),
+
     initApi () {
       window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 
@@ -60,6 +64,7 @@ export default {
       this.recognition.addEventListener('end', () => {
         if (this.runtimeTranscription !== '') {
           this.transcription = this.runtimeTranscription
+          this.setSkipAnimation(false)
           this.$emit('onEnd', this.transcription)
         }
         this.runtimeTranscription = ''
@@ -78,6 +83,7 @@ export default {
     },
 
     manualQuery(query) {
+      this.setSkipAnimation(true)
       this.transcription = query
       this.$emit('onEnd', this.transcription)
     }

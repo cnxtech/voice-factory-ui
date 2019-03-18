@@ -35,7 +35,8 @@ export default {
   computed: {
     ...mapGetters({
       currentScene: 'getSceneNumber',
-      getEntityDisplay: 'getEntityDisplay'
+      getEntityDisplay: 'getEntityDisplay',
+      getSkipAnimation: 'getSkipAnimation'
     }),
 
     currentVo() {
@@ -110,8 +111,8 @@ export default {
         this.setCurrentScene(7)
       } else if (this.currentScene === 7) {
         this.$refs.videoSceneOne.pause()
-        this.$refs.videoAnswer.volume = 0
-        this.$refs.videoAnswer.play()
+        // this.$refs.videoAnswer.volume = 0
+        // this.$refs.videoAnswer.play()
       }
 
       if (t > 17 && this.setEntityDisplay) {
@@ -186,6 +187,8 @@ export default {
         this.playBackgroundAudio()
         this.startAutomation()
       } else if (this.currentScene === 7) {
+        this.$refs.videoAnswer.volume = 0
+        this.$refs.videoAnswer.play()
         setTimeout(this.fadeAudio(), 500)
       }
       setTimeout(this.playVoAudio, 2000)

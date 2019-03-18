@@ -8,15 +8,16 @@ export default new Vuex.Store({
   	query: '',
   	answer: '',
     answerSoundfile: false,
-    soundCapture: false,
+    currentScene: 0,
   	entity: '',
     entityDisplay: true,
     error: '',
-  	intent: '',
     followUp: '',
-  	introEnded: false,
-    currentScene: 0,
     fullResponse: false,
+  	intent: '',
+    introEnded: false,
+    skipAnimation: false,
+    soundCapture: false,
     voActive: false
   },
 
@@ -63,6 +64,10 @@ export default new Vuex.Store({
 
     storeSceneNumber(state, val) {
       state.currentScene = val
+    },
+
+    storeSkipAnimation(state, val) {
+      state.skipAnimation = val
     },
 
     storeSoundCapture(state, val) {
@@ -119,6 +124,10 @@ export default new Vuex.Store({
       commit('storeSceneNumber', val)
     },
 
+    setSkipAnimation({ commit }, val) {
+      commit('storeSkipAnimation', val)
+    },
+
     setSoundCapture({ commit }, val) {
       commit('storeSoundCapture', val)
     },
@@ -171,6 +180,10 @@ export default new Vuex.Store({
 
     getSceneNumber(state) {
       return state.currentScene
+    },
+
+    getSkipAnimation(state) {
+      return state.skipAnimation
     },
 
     getSoundCapture(state) {
