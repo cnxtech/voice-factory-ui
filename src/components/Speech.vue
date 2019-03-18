@@ -76,7 +76,7 @@ export default {
 
     grabSSML(r) {
       r.map(o => {
-        return o.type === 'SSML'
+        return o.type === 'TEXT'
       })
     },
 
