@@ -8,6 +8,7 @@ export default new Vuex.Store({
   	query: '',
   	answer: '',
     answerSoundfile: false,
+    answerVidState: false,
     currentScene: 0,
   	entity: '',
     entityDisplay: true,
@@ -32,6 +33,10 @@ export default new Vuex.Store({
 
     storeAnswerSoundfile(state, val) {
       state.answerSoundfile = val
+    },
+
+    storeAnswerVidState(state, val) {
+      state.answerVidState = val
     },
 
 	  storeEntity(state, val) {
@@ -92,6 +97,10 @@ export default new Vuex.Store({
       commit('storeAnswerSoundfile', val)
     },
 
+    setAnswerVidState({ commit }, val) {
+      commit('storeAnswerVidState', val)
+    },
+
   	setEntity({ commit }, val) {
 	    commit('storeEntity', val)
   	},
@@ -134,7 +143,7 @@ export default new Vuex.Store({
 
     setVoActive({ commit }, val) {
       commit('storeVoActive', val)
-    },
+    }
   },
 
   getters: {
@@ -148,6 +157,10 @@ export default new Vuex.Store({
 
     getAnswerSoundfile(state) {
       return state.answerSoundfile
+    },
+
+    getAnswerVidState(state) {
+      return state.answerVidState
     },
 
   	getEntity(state) {

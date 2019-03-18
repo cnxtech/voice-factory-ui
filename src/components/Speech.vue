@@ -3,7 +3,7 @@
     speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
     .content-container
       .content-scene.start(:class="{ show: getCurrentScene === 0 }")
-        // h1 Please ask a question
+        h1.question Please ask a question
         .query(v-if="getQuery.length > 0")
           h1 {{ getQuery }}
         // dot-loader(v-show="!result && showLoader")
@@ -69,6 +69,7 @@ export default {
       setQuery: 'setQuery',
       setAnswer: 'setAnswer',
       setAnswerSoundfile: 'setAnswerSoundfile',
+      setAnswerVidState: 'setAnswerVidState',
       setEntity: 'setEntity',
       setError: 'setError',
       setFollowUp: 'setFollowUp',
@@ -115,7 +116,7 @@ export default {
       this.result = data
 
       if(this.getSkipAnimation) {
-        setTimeout(() => { this.setCurrentScene(7) }, 500)
+        setTimeout(() => { this.setCurrentScene(7) }, 2000)
       } else {
         setTimeout(() => { this.setCurrentScene(1) }, 500)
       }
@@ -146,8 +147,11 @@ export default {
     },
 
     playerEnd() {
-      this.$refs.speech.start()
-      setTimeout(() => { this.setCurrentScene(0) }, 1000)
+      this.setAnswerVidState(false)
+      setTimeout(() => {
+        this.setCurrentScene(0)
+        this.$refs.speech.start()
+      }, 5000)
     },
 
     query(query) {
@@ -182,7 +186,6 @@ export default {
     },
 
     getCurrentScene() {
-      console.log(this.getCurrentScene)
       if (this.getCurrentScene === 0) {
         this.setQuery('')
       } else if (this.getCurrentScene === 7 && this.getAnswerSoundfile) {
@@ -251,6 +254,12 @@ export default {
           width: 60vw
           margin: auto
           text-align: center
+        &.question
+          position: fixed
+          top: 40%
+          left: 50%
+          width: 70vw
+          transform: translate(-50%, -40%)
     audio
       display: none
 </style>

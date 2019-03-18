@@ -1,5 +1,6 @@
 <template lang="pug">
   div
+    audio(ref="questions" :src="questionSound" preload="auto")
 </template>
 
 <script>
@@ -22,7 +23,18 @@ export default {
     return {
       runtimeTranscription: '',
       transcription: '',
-      recognition: null
+      recognition: null,
+      sounds: [
+        '/assets/audio/q1.mp3',
+        '/assets/audio/q2.mp3',
+        '/assets/audio/q3.mp3',
+        '/assets/audio/q4.mp3',
+        '/assets/audio/q5.mp3',
+        '/assets/audio/q6.mp3',
+        '/assets/audio/q7.mp3',
+        '/assets/audio/q8.mp3',
+        '/assets/audio/q9.mp3'
+      ]
     }
   },
 
@@ -86,19 +98,12 @@ export default {
       this.setSkipAnimation(true)
       this.transcription = query
       this.$emit('onEnd', this.transcription)
+      setTimeout(() => { this.$refs.questions.play() }, 100)
     }
   },
 
   mounted () {
     this.initApi()
   }
-
-  // watch: {
-  //   currentScene() {
-  //     if (this.currentScene === 0) {
-  //       this.initApi()
-  //     }
-  //   }
-  // }
 }
 </script>

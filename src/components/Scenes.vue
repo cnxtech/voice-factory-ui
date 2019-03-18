@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       sequencer: false,
-      backgroundVolume: 0.5
+      backgroundVolume: 1
     }
   },
 
@@ -35,6 +35,7 @@ export default {
   computed: {
     ...mapGetters({
       currentScene: 'getSceneNumber',
+      getAnswerVidState: 'getAnswerVidState',
       getEntityDisplay: 'getEntityDisplay',
       getSkipAnimation: 'getSkipAnimation'
     }),
@@ -89,6 +90,7 @@ export default {
 
   methods: {
     ...mapActions({
+      setAnswerVidState: 'setAnswerVidState',
       setCurrentScene: 'setSceneNumber',
       setEntityDisplay: 'setEntityDisplay',
       setVoActive: 'setVoActive'
@@ -111,8 +113,6 @@ export default {
         this.setCurrentScene(7)
       } else if (this.currentScene === 7) {
         this.$refs.videoSceneOne.pause()
-        // this.$refs.videoAnswer.volume = 0
-        // this.$refs.videoAnswer.play()
       }
 
       if (t > 17 && this.setEntityDisplay) {
@@ -129,8 +129,8 @@ export default {
           this.backgroundVolume = 1
           return
         }
-        this.backgroundVolume -= 0.01
-      }, 30)
+        this.backgroundVolume -= 0.1
+      }, 50)
     },
 
     handleKeys(e) {
@@ -189,9 +189,18 @@ export default {
       } else if (this.currentScene === 7) {
         this.$refs.videoAnswer.volume = 0
         this.$refs.videoAnswer.play()
+        this.setAnswerVidState(true)
         setTimeout(this.fadeAudio(), 500)
       }
       setTimeout(this.playVoAudio, 2000)
+    },
+
+    getAnswerVidState() {
+      console.log(this.getAnswerVidState)
+      if(!this.getAnswerVidState) {
+        this.$refs.videoAnswer.pause()
+        this.$refs.videoAnswer.currentTime = 0
+      }
     }
   }
 }
