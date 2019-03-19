@@ -79,6 +79,7 @@ export default {
       } else if (e.key === 'f') {
         this.setIntroState(true)
         this.screenSaver = false
+        this.stopVideo()
       }
     },
 
