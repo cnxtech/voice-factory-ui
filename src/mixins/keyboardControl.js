@@ -19,7 +19,8 @@ export default {
 
   methods: {
     ...mapActions({
-      setReset: 'setReset'
+      setReset: 'setReset',
+      setAnswer: 'setAnswer'
     }),
 
     handleQKeys(e) {
@@ -46,7 +47,8 @@ export default {
 
     emitQeury(question, sound) {
       this.setReset(true)
-      setTimeOut(() => {
+      this.setAnswer('')
+      setTimeout(() => {
         this.manualQuery(question)
         this.questionSound = this.sounds[sound]
       }, 100)

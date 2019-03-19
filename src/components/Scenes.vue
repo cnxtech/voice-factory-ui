@@ -95,6 +95,7 @@ export default {
       setAnswerVidState: 'setAnswerVidState',
       setCurrentScene: 'setSceneNumber',
       setEntityDisplay: 'setEntityDisplay',
+      setIntroState: 'setIntroState',
       setVoActive: 'setVoActive'
     }),
 
@@ -120,7 +121,6 @@ export default {
       if (t > 17 && this.setEntityDisplay) {
         this.setEntityDisplay(false)
       }
-
     },
 
     fadeAudio() {
@@ -136,9 +136,17 @@ export default {
     },
 
     handleKeys(e) {
-      if(/^([0-8])$/.test(e.key)) {
-        console.log(parseInt(e.key))
+      if (/^([0-8])$/.test(e.key)) {
         this.setCurrentScene(parseInt(e.key))
+      }
+      if (e.key === 's') {
+        this.setIntroState(false)
+        this.setCurrentScene(0)
+        this.$parent.$children[0].$refs.nflVideo.currentTime = 0
+        this.$parent.$children[0].$refs.nflVideo.play()
+      } else if (e.key === 'f') {
+        this.setIntroState(true)
+        this.setCurrentScene(0)
       }
     },
 
