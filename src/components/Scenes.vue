@@ -196,7 +196,6 @@ export default {
     },
 
     getAnswerVidState() {
-      console.log(this.getAnswerVidState)
       if(!this.getAnswerVidState) {
         this.$refs.videoAnswer.pause()
         this.$refs.videoAnswer.currentTime = 0
