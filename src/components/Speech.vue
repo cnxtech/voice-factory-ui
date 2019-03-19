@@ -3,7 +3,7 @@
     speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
     .content-container
       .content-scene.start(:class="{ show: getCurrentScene === 0 }")
-        h1.question Hit the red button and ask a question about Football Rules or Game Jargon
+        h1.question(v-if="showCTA") Hit the red button and ask a question about Football Rules or Game Jargon
         .query(v-if="getQuery.length > 0")
           h1 {{ getQuery }}
         // dot-loader(v-show="!result && showLoader")
@@ -35,7 +35,8 @@ export default {
       result: false,
       currentTranscription: '',
       intentMapping: json,
-      showLoader: false
+      showLoader: false,
+      showCTA: true
     }
   },
 
@@ -96,6 +97,7 @@ export default {
     },
 
     onEnd(transcription) {
+      this.showCTA = false
       let query = {
         questionProperties: {
           naturalLanguageQuery: transcription
@@ -115,6 +117,7 @@ export default {
     },
 
     onRunning(transcription) {
+      this.showCTA = false
       this.setQuery(transcription)
     },
 
@@ -204,6 +207,7 @@ export default {
     getCurrentScene() {
       if (this.getCurrentScene === 0) {
         this.setQuery('')
+        this.showCTA = true
       } else if (this.getCurrentScene === 7 && this.getAnswerSoundfile) {
         setTimeout(this.playAudio, 500)
       }
@@ -280,10 +284,10 @@ export default {
           text-align: center
         &.question
           position: fixed
-          top: 40%
+          top: 50%
           left: 50%
           width: 70vw
-          transform: translate(-50%, -40%)
+          transform: translate(-50%, -50%)
     audio
       display: none
 </style>
