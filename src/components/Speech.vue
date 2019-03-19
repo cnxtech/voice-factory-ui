@@ -52,6 +52,7 @@ export default {
       getFollowUp: 'getFollowUp',
       getFullResponse: 'getFullResponse',
       getIntent: 'getIntent',
+      getReset: 'getReset',
       getSkipAnimation: 'getSkipAnimation',
       getVoActive: 'getVoActive'
     }),
@@ -77,7 +78,8 @@ export default {
       setFollowUp: 'setFollowUp',
       setFullResponse: 'setFullResponse',
       setIntent: 'setIntent',
-      setCurrentScene: 'setSceneNumber'
+      setCurrentScene: 'setSceneNumber',
+      setReset: 'setReset'
     }),
 
     grabSSML(r) {
@@ -142,8 +144,8 @@ export default {
         this.setFollowUp(data.breadcrumbResponse.response)
       } else {
         this.setAnswer('Sorry, I do not know the answer to this question.')
-        this.setEntity('')
-        this.setIntent('')
+        this.setEntity('No Match')
+        this.setIntent('No Match')
         this.setFollowUp('')
         this.setError(data.responseType)
       }
@@ -152,6 +154,7 @@ export default {
     playAudio() {
       this.$refs.speech.stop()
       setTimeout(() => {
+        this.$refs.audio.currentTime = 0
         this.$refs.audio.play()
       }, 500)
     },
@@ -160,7 +163,8 @@ export default {
       this.setAnswerVidState(false)
       setTimeout(() => {
         this.setCurrentScene(0)
-        this.$refs.speech.start()
+        // Don't automatically turn on speech recognition.
+        // this.$refs.speech.start()
       }, 2500)
     },
 
@@ -200,6 +204,14 @@ export default {
         this.setQuery('')
       } else if (this.getCurrentScene === 7 && this.getAnswerSoundfile) {
         setTimeout(this.playAudio, 500)
+      }
+    },
+
+    getReset() {
+      if (this.getReset) {
+        this.setReset(false)
+        this.setCurrentScene(0)
+        this.$refs.audio.pause()
       }
     }
   }

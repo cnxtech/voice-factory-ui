@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
   	query: '',
+    activateSpeechInput: false,
   	answer: '',
     answerSSML: '',
     answerSoundfile: false,
@@ -18,15 +19,20 @@ export default new Vuex.Store({
     fullResponse: false,
   	intent: '',
     introEnded: false,
+    resetToInput: false,
     skipAnimation: false,
     soundCapture: false,
-    voActive: false
+    voActive: false,
   },
 
   mutations: {
 	 	storeQuery(state, val) {
 	    state.query = val
 	  },
+
+    storeActivateSpeechInput(state, val) {
+      state.activateSpeechInput = val
+    },
 
 	  storeAnswer(state, val) {
 	    state.answer = val
@@ -72,6 +78,10 @@ export default new Vuex.Store({
 	  	state.introEnded = val
 	  },
 
+    storeReset(state, val) {
+      state.resetToInput = val
+    },
+
     storeSceneNumber(state, val) {
       state.currentScene = val
     },
@@ -94,8 +104,12 @@ export default new Vuex.Store({
 	    commit('storeQuery', val)
   	},
 
-		setAnswer({ commit }, val) {
-	    commit('storeAnswer', val)
+    setAnswer({ commit }, val) {
+      commit('storeAnswer', val)
+    },
+
+		setActivateSpeechInput({ commit }, val) {
+	    commit('storeActivateSpeechInput', val)
   	},
 
     setAnswerSSML({ commit }, val) {
@@ -138,6 +152,10 @@ export default new Vuex.Store({
 	    commit('storeIntroState', val)
   	},
 
+    setReset({ commit }, val) {
+      commit('storeReset', val)
+    },
+
     setSceneNumber({ commit }, val) {
       commit('storeSceneNumber', val)
     },
@@ -159,6 +177,10 @@ export default new Vuex.Store({
   	getQuery(state) {
   		return state.query
   	},
+
+    getActivateSpeechInput(state) {
+      return state.activateSpeechInput
+    },
 
   	getAnswer(state) {
   		return state.answer
@@ -203,6 +225,10 @@ export default new Vuex.Store({
   	getIntroState(state) {
   		return state.introEnded
   	},
+
+    getReset(state) {
+      return state.resetToInput
+    },
 
     getSceneNumber(state) {
       return state.currentScene

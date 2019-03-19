@@ -1,4 +1,5 @@
 import json from '@/assets/json/questions.json'
+import { mapActions } from 'vuex'
 
 export default {
   data() {
@@ -17,35 +18,38 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      setReset: 'setReset'
+    }),
+
     handleQKeys(e) {
       if (e.key === 'q') {
-        this.manualQuery(this.questions.player)
-        this.questionSound = this.sounds[0]
+        this.emitQeury(this.questions.player, 0)
       } else if (e.key === 'w') {
-        this.manualQuery(this.questions.team)
-        this.questionSound = this.sounds[1]
+        this.emitQeury(this.questions.team, 1)
       } else if (e.key === 'e') {
-        this.manualQuery(this.questions.superBowl)
-        this.questionSound = this.sounds[2]
+        this.emitQeury(this.questions.superBowl, 2)
       } else if (e.key === 'r') {
-        this.manualQuery(this.questions.gamePlay)
-        this.questionSound = this.sounds[3]
+        this.emitQeury(this.questions.gamePlay, 3)
       } else if (e.key === 't') {
-        this.manualQuery(this.questions.jargon)
-        this.questionSound = this.sounds[4]
+        this.emitQeury(this.questions.jargon, 4)
       } else if (e.key === 'y') {
-        this.manualQuery(this.questions.position)
-        this.questionSound = this.sounds[5]
+        this.emitQeury(this.questions.position, 5)
       } else if (e.key === 'u') {
-        this.manualQuery(this.questions.quantity)
-        this.questionSound = this.sounds[6]
+        this.emitQeury(this.questions.quantity, 6)
       } else if (e.key === 'i') {
-        this.manualQuery(this.questions.halfTime)
-        this.questionSound = this.sounds[7]
+        this.emitQeury(this.questions.halfTime, 7)
       } else if (e.key === 'o') {
-        this.manualQuery(this.questions.coaches)
-        this.questionSound = this.sounds[8]
+        this.emitQeury(this.questions.coaches, 8)
       }
+    },
+
+    emitQeury(question, sound) {
+      this.setReset(true)
+      setTimeOut(() => {
+        this.manualQuery(question)
+        this.questionSound = this.sounds[sound]
+      }, 100)
     }
   }
 }

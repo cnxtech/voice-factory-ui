@@ -5,6 +5,8 @@
       source(src="https://s3.amazonaws.com/voice-factory-assets/FINAL.mp4" type="video/mp4")
     video.s-7(:class="{ show: currentScene === 7 }" ref="videoAnswer" loop preload="metadata")
       source(src="/assets/video/answer.mp4" type="video/mp4")
+    video.full-art(:class="{ show: currentScene === 8 }" ref="videoFullArt" preload="metadata")
+      source(src="https://s3.amazonaws.com/voice-factory-assets/FINAL.mp4" type="video/mp4")
     audio(ref="background" src="/assets/audio/background.mp3" loop preload="auto")
     audio(ref="vo" :src="currentVo" preload="auto")
 </template>
@@ -134,7 +136,8 @@ export default {
     },
 
     handleKeys(e) {
-      if(/^([0-7])$/.test(e.key)) {
+      if(/^([0-8])$/.test(e.key)) {
+        console.log(parseInt(e.key))
         this.setCurrentScene(parseInt(e.key))
       }
     },
@@ -147,7 +150,7 @@ export default {
 
     playVoAudio() {
       const s = this.currentScene
-      if (s !== 0 && s !== 3 && s !==7) {
+      if (s !== 0 && s !== 3 && s !== 7 && s !== 8) {
         this.$refs.vo.currentTime = 0
         this.$refs.vo.play()
         this.setVoActive(true)
@@ -191,6 +194,11 @@ export default {
         this.$refs.videoAnswer.play()
         this.setAnswerVidState(true)
         setTimeout(this.fadeAudio(), 500)
+      } else if (this.currentScene === 8) {
+        this.$refs.videoFullArt.currentTime = 63
+        this.$refs.videoFullArt.play()
+      } else {
+        this.$refs.videoFullArt.pause()
       }
       setTimeout(this.playVoAudio, 2000)
     },
@@ -254,4 +262,9 @@ export default {
       &.show
         opacity: 1
         transition: opacity .5s ease-in-out
+    &.full-art
+      &.show
+        opacity: 1
+        transition: opacity .5s ease-in-out
+        z-index: 9999
 </style>

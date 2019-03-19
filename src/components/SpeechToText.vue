@@ -40,7 +40,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      currentScene: 'getSceneNumber'
+      currentScene: 'getSceneNumber',
+      getActivateSpeechInput: 'getActivateSpeechInput'
     })
   },
 
@@ -83,10 +84,11 @@ export default {
         // this.recognition.start()
       })
 
-      this.recognition.start()
+      // this.recognition.start()
     },
 
     start() {
+      // console.log(this.recognition, this.recognition.start())
       this.recognition.start()
     },
 
@@ -99,6 +101,16 @@ export default {
       this.transcription = query
       this.$emit('onEnd', this.transcription)
       setTimeout(() => { this.$refs.questions.play() }, 100)
+    }
+  },
+
+  watch: {
+    getActivateSpeechInput() {
+      if (this.getActivateSpeechInput) {
+        this.start()
+      } else {
+        this.stop()
+      }
     }
   },
 

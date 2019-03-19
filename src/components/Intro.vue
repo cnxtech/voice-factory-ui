@@ -69,7 +69,8 @@ export default {
 
   methods: {
     ...mapActions({
-      setIntroState: 'setIntroState'
+      setIntroState: 'setIntroState',
+      setActivateSpeechInput: 'setActivateSpeechInput'
     }),
 
     handleClick(e) {
@@ -80,6 +81,8 @@ export default {
         this.setIntroState(true)
         this.screenSaver = false
         this.stopVideo()
+      } else if (e.key === 'm') {
+        this.setActivateSpeechInput(true)
       }
     },
 
