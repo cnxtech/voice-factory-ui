@@ -148,6 +148,7 @@ export default {
         this.setFollowUp(data.breadcrumbResponse.response)
       } else {
         this.setAnswer('Sorry, I do not know the answer to this question.')
+        this.setAnswerSSML('<lang xml:lang="en-US"><prosody rate="105%">Sorry, I do not know the answer to this question.</prosody></lang>')
         this.setEntity('No Match')
         this.setIntent('No Match')
         this.setFollowUp('')
