@@ -161,7 +161,7 @@ export default {
       setTimeout(() => {
         this.setCurrentScene(0)
         this.$refs.speech.start()
-      }, 5000)
+      }, 2500)
     },
 
     query(query) {
@@ -248,11 +248,11 @@ export default {
         &.intent, &.entity
           position: fixed
           word-wrap: break-word
-          font-size: 4rem
+          font-size: 3vw
           z-index: 9999999999
         &.intent
-          top: 34.5rem
-          left: 30rem
+          top: 16vh
+          left: 24.7vw
           width: 40rem
           color: #c9f56a
         &.entity
