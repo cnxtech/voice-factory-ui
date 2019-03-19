@@ -73,6 +73,7 @@ export default {
       setAnswerSSML: 'setAnswerSSML',
       setAnswerSoundfile: 'setAnswerSoundfile',
       setAnswerVidState: 'setAnswerVidState',
+      setActivateSpeechInput: 'setActivateSpeechInput',
       setEntity: 'setEntity',
       setError: 'setError',
       setFollowUp: 'setFollowUp',
@@ -170,7 +171,8 @@ export default {
 
     query(query) {
       this.setAnswerSoundfile(false)
-      this.$refs.speech.stop()
+      this.setActivateSpeechInput(false)
+      // this.$refs.speech.stop()
       axios.post('https://api.jackomatic.com/v1/ask', query)
       .then( response => {
         this.parseResults(response.data.answerProperties)

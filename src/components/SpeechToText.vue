@@ -47,7 +47,8 @@ export default {
 
   methods: {
     ...mapActions({
-      setSkipAnimation: 'setSkipAnimation'
+      setSkipAnimation: 'setSkipAnimation',
+      setActivateSpeechInput: 'setActivateSpeechInput'
     }),
 
     initApi () {
@@ -107,8 +108,10 @@ export default {
   watch: {
     getActivateSpeechInput() {
       if (this.getActivateSpeechInput) {
+        console.log('activate')
         this.start()
       } else {
+        console.log('de-activate')
         this.stop()
       }
     }
