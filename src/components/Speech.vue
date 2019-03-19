@@ -196,6 +196,10 @@ export default {
 
     showSceneContent(id) {
       return this.result && this.getCurrentScene === id && this.getEntityDisplay
+    },
+
+    stopAudio() {
+      this.$refs.audio.pause()
     }
   },
 
@@ -217,7 +221,7 @@ export default {
       if (this.getReset) {
         this.setReset(false)
         this.setCurrentScene(0)
-        this.$refs.audio.pause()
+        this.stopAudio()
       }
     }
   }
@@ -263,6 +267,8 @@ export default {
         text-transform: capitalize
         margin-bottom: 2.5rem
         font-size: 5.5vw
+        line-height: 1.2
+        letter-spacing: 1px
         &.intent, &.entity
           position: fixed
           word-wrap: break-word
@@ -282,6 +288,7 @@ export default {
           width: 60vw
           margin: auto
           text-align: center
+          font-weight: normal
         &.question
           position: fixed
           top: 50%

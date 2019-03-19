@@ -78,7 +78,7 @@ export default {
       this.recognition.addEventListener('end', () => {
         if (this.runtimeTranscription !== '') {
           this.transcription = this.runtimeTranscription
-          this.setSkipAnimation(false)
+          // this.setSkipAnimation(false)
           this.$emit('onEnd', this.transcription)
         }
         this.runtimeTranscription = ''

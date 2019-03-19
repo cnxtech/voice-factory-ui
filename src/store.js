@@ -80,6 +80,7 @@ export default new Vuex.Store({
 	  },
 
     storeReset(state, val) {
+      console.log(val)
       state.resetToInput = val
     },
 
