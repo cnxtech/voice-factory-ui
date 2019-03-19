@@ -43,6 +43,7 @@ export default {
     ...mapGetters({
       getQuery: 'getQuery',
       getAnswer: 'getAnswer',
+      getAnswerSSML: 'getAnswerSSML',
       getAnswerSoundfile: 'getAnswerSoundfile',
       getCurrentScene: 'getSceneNumber',
       getEntity: 'getEntity',
@@ -68,6 +69,7 @@ export default {
     ...mapActions({
       setQuery: 'setQuery',
       setAnswer: 'setAnswer',
+      setAnswerSSML: 'setAnswerSSML',
       setAnswerSoundfile: 'setAnswerSoundfile',
       setAnswerVidState: 'setAnswerVidState',
       setEntity: 'setEntity',
@@ -79,9 +81,15 @@ export default {
     }),
 
     grabSSML(r) {
-      r.map(o => {
+      return r.filter(o => {
+        return o.type === 'SSML'
+      })[0].fulfillment
+    },
+
+    grabText(r) {
+      return r.filter(o => {
         return o.type === 'TEXT'
-      })
+      })[0].fulfillment
     },
 
     onEnd(transcription) {
@@ -125,8 +133,10 @@ export default {
         this.setIntent(data.responseIntentName)
         this.setFullResponse(data)
         const ent = this.parseEntity(data.alignedVariables)
-        const ans = this.grabSSML(data.fulfillmentResponses)
-        this.setAnswer(data.fulfillmentResponses[0].fulfillment)
+        const ansSSML = this.grabSSML(data.fulfillmentResponses)
+        const ansTEXT = this.grabText(data.fulfillmentResponses)
+        this.setAnswer(ansTEXT)
+        this.setAnswerSSML(ansSSML)
         this.setEntity(ent.val)
         this.setError(data.responseType)
         this.setFollowUp(data.breadcrumbResponse.response)
@@ -166,7 +176,7 @@ export default {
     },
 
     getAnswerSpeech() {
-      const query = { text: this.getAnswer }
+      const query = { text: this.getAnswerSSML, type: 'ssml' }
       axios.post('/.netlify/functions/polly', query)
       .then( response => {
         this.setAnswerSoundfile(response.data.url)

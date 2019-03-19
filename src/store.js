@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
   	query: '',
   	answer: '',
+    answerSSML: '',
     answerSoundfile: false,
     answerVidState: false,
     currentScene: 0,
@@ -30,6 +31,10 @@ export default new Vuex.Store({
 	  storeAnswer(state, val) {
 	    state.answer = val
 	  },
+
+    storeAnswerSSML(state, val) {
+      state.answerSSML = val
+    },
 
     storeAnswerSoundfile(state, val) {
       state.answerSoundfile = val
@@ -93,6 +98,10 @@ export default new Vuex.Store({
 	    commit('storeAnswer', val)
   	},
 
+    setAnswerSSML({ commit }, val) {
+      commit('storeAnswerSSML', val)
+    },
+
     setAnswerSoundfile({ commit }, val) {
       commit('storeAnswerSoundfile', val)
     },
@@ -154,6 +163,10 @@ export default new Vuex.Store({
   	getAnswer(state) {
   		return state.answer
   	},
+
+    getAnswerSSML(state) {
+      return state.answerSSML
+    },
 
     getAnswerSoundfile(state) {
       return state.answerSoundfile

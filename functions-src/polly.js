@@ -27,6 +27,7 @@ exports.handler = function(event, context, callback) {
     if (event.httpMethod === 'POST') {
       const payload = JSON.parse(event.body)
       speechParams.Text = payload.text
+      speechParams.TextType = payload.type
       const signer = new AWS.Polly.Presigner(speechParams, polly)
       signer.getSynthesizeSpeechUrl(speechParams, (error, url) => {
         console.log(error, url)
