@@ -22,6 +22,7 @@ export default new Vuex.Store({
     resetToInput: false,
     skipAnimation: false,
     soundCapture: false,
+    stopVO: false,
     voActive: false,
   },
 
@@ -94,9 +95,13 @@ export default new Vuex.Store({
       state.soundCapture = val
     },
 
+    storeStopVO(state, val) {
+      state.stopVO = val
+    },
+
     storeVoActive(state, val) {
       state.voActive = val
-    },
+    }
   },
 
   actions: {
@@ -166,6 +171,10 @@ export default new Vuex.Store({
 
     setSoundCapture({ commit }, val) {
       commit('storeSoundCapture', val)
+    },
+
+    setStopVO({ commit }, val) {
+      commit('storeStopVO', val)
     },
 
     setVoActive({ commit }, val) {
@@ -240,6 +249,10 @@ export default new Vuex.Store({
 
     getSoundCapture(state) {
       return state.soundCapture
+    },
+
+    getStopVO(state) {
+      return state.stopVO
     },
 
     getVoActive(state) {

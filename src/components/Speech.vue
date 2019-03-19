@@ -3,7 +3,7 @@
     speech-to-text(@onEnd="onEnd" @onRunning="onRunning" ref="speech")
     .content-container
       .content-scene.start(:class="{ show: getCurrentScene === 0 }")
-        h1.question Please ask a question
+        h1.question Hit the red button and ask a question about Football Rules or Game Jargon
         .query(v-if="getQuery.length > 0")
           h1 {{ getQuery }}
         // dot-loader(v-show="!result && showLoader")

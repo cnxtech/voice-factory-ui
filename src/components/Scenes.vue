@@ -39,7 +39,8 @@ export default {
       currentScene: 'getSceneNumber',
       getAnswerVidState: 'getAnswerVidState',
       getEntityDisplay: 'getEntityDisplay',
-      getSkipAnimation: 'getSkipAnimation'
+      getSkipAnimation: 'getSkipAnimation',
+      getStopVO: 'getStopVO'
     }),
 
     currentVo() {
@@ -144,9 +145,11 @@ export default {
         this.setCurrentScene(0)
         this.$parent.$children[0].$refs.nflVideo.currentTime = 0
         this.$parent.$children[0].$refs.nflVideo.play()
+        this.stopVoAudio()
       } else if (e.key === 'f') {
         this.setIntroState(true)
         this.setCurrentScene(0)
+        this.stopVoAudio()
       }
     },
 
@@ -215,6 +218,13 @@ export default {
       if(!this.getAnswerVidState) {
         this.$refs.videoAnswer.pause()
         this.$refs.videoAnswer.currentTime = 0
+      }
+    },
+
+    getStopVO() {
+      if (this.getStopVO) {
+        this.$refs.vo.pause()
+        this.setStopVO(false)
       }
     }
   }
