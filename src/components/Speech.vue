@@ -253,12 +253,12 @@ export default {
         &.intent
           top: 16vh
           left: 24.7vw
-          width: 40rem
+          width: 30vw
           color: #c9f56a
         &.entity
-          top: 186rem
-          left: 78rem
-          width: 40rem
+          top: 86.35vh
+          left: 65.4vw
+          width: 30vw
           color: #693c39
         &.answer
           width: 60vw
