@@ -290,6 +290,7 @@ export default {
           margin: auto
           text-align: center
           font-weight: normal
+          font-family: 'Circular Book'
         &.question
           position: fixed
           top: 50%
