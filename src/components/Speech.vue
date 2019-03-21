@@ -36,7 +36,15 @@ export default {
       currentTranscription: '',
       intentMapping: json,
       showLoader: false,
-      showCTA: true
+      showCTA: true,
+      errorReplies: [
+        'Uh Oh. I think I lost your question. I was daydreaming about free agency. Try asking a different question.',
+        'Uh Oh. I think I lost your question. I was daydreaming about my fantasy football team. Try asking a different question.'
+      ],
+      errorSoundfiles: [
+        '/assets/audio/error_agency.mp3',
+        '/assets/audio/error_fantasy.mp3'
+      ]
     }
   },
 
@@ -59,7 +67,8 @@ export default {
     }),
 
     valid() {
-      return this.result && this.result.responseType === 'FULFILLED'
+      console.log(this.result)
+      return this.result && this.result.responseType === 'FULFILLED' && this.result.fulfillmentResponses.length > 0
     }
   },
 
@@ -83,6 +92,14 @@ export default {
       setCurrentScene: 'setSceneNumber',
       setReset: 'setReset'
     }),
+
+    getRandomizedError() {
+      const rand = Math.floor(Math.random() * 2)
+      return {
+        text: this.errorReplies[rand],
+        file: this.errorSoundfiles[rand]
+      }
+    },
 
     grabSSML(r) {
       return r.filter(o => {
@@ -186,13 +203,20 @@ export default {
     },
 
     getAnswerSpeech() {
-      const query = { text: this.getAnswerSSML, type: 'ssml' }
-      axios.post('/.netlify/functions/polly', query)
-      .then( response => {
-        this.setAnswerSoundfile(response.data.url)
-      })
-      .catch( error => {
-      })
+      console.log('asd', this.valid)
+      if (this.valid) {
+        const query = { text: this.getAnswerSSML, type: 'ssml' }
+        axios.post('/.netlify/functions/polly', query)
+        .then( response => {
+          this.setAnswerSoundfile(response.data.url)
+        })
+        .catch( error => {
+        })
+      } else {
+        const a = this.getRandomizedError()
+        this.setAnswer(a.text)
+        this.setAnswerSoundfile(a.file)
+      }
     },
 
     showSceneContent(id) {
@@ -291,6 +315,7 @@ export default {
           text-align: center
           font-weight: normal
           font-family: 'Circular Book'
+          text-transform: none
         &.question
           position: fixed
           top: 50%
