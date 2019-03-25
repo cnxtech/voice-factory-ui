@@ -45,7 +45,7 @@ export default {
 
     currentVo() {
       const s = this.currentScene
-      if (s !== 0 && s !== 3 && s !==7) {
+      if (s !== 0 && s !==7) {
         return '/assets/audio/' + this.currentScene + '.mp3'
       } else {
         return '/assets/audio/1.mp3'
@@ -170,7 +170,7 @@ export default {
 
     playVoAudio() {
       const s = this.currentScene
-      if (s !== 0 && s !== 3 && s !== 7 && s !== 8) {
+      if (s !== 0 && s !== 7 && s !== 8) {
         this.$refs.vo.currentTime = 0
         this.$refs.vo.play()
         this.setVoActive(true)

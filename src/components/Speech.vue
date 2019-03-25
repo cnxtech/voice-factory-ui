@@ -67,7 +67,6 @@ export default {
     }),
 
     valid() {
-      console.log(this.result)
       return this.result && this.result.responseType === 'FULFILLED' && this.result.fulfillmentResponses.length > 0
     }
   },
@@ -203,7 +202,6 @@ export default {
     },
 
     getAnswerSpeech() {
-      console.log('asd', this.valid)
       if (this.valid) {
         const query = { text: this.getAnswerSSML, type: 'ssml' }
         axios.post('/.netlify/functions/polly', query)
